@@ -1,18 +1,24 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlinx-serialization'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
 }
 
 android {
     namespace 'com.example.mosisprojekat'
-    compileSdk 33
+    compileSdk ConfigData.compileSdkVersion
+    buildToolsVersion ConfigData.buildToolVersion
+    testOptions.unitTests.includeAndroidResources = true
 
     defaultConfig {
         applicationId "com.example.mosisprojekat"
-        minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        minSdk ConfigData.minSdkVersion
+        targetSdk ConfigData.targetSdkVersion
+        versionCode ConfigData.versionCode
+        versionName ConfigData.versionName
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -21,43 +27,143 @@ android {
     }
 
     buildTypes {
+
+        def APP_NAME_RELEASE = 'M1Gym'
+        def APP_NAME_DEV = 'M1Gym'
+
+        debug {
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            resValue "string", "app_name", APP_NAME_DEV
+            buildConfigField "String", "BASE_URL", "\"${Links.retrofitBaseUrlDev}\""
+            debuggable true
+        }
+
         release {
+            versionNameSuffix "-release"
+            resValue "string", "app_name", APP_NAME_RELEASE
+            buildConfigField "String", "BASE_URL", "\"${Links.retrofitBaseUrlRelease}\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kapt {
+        correctErrorTypes true
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
+        kotlinCompilerExtensionVersion Versions.compose_version
     }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    configurations {
+        compile.exclude group: 'androidx.annotattion', module: 'annotation'
+    }
+    hilt {
+        enableAggregatingTask true
+    }
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
-    implementation "androidx.compose.ui:ui:$compose_ui_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation 'androidx.compose.material:material:1.2.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    //PROJECT FOUNDATION
+    implementation Dependencies.ktx_core
+    implementation Dependencies.android_material
+    implementation Dependencies.compose_ui
+    implementation Dependencies.compose_material
+    implementation Dependencies.compose_ui_preview
+    implementation Dependencies.lifecycle_runtime
+    implementation Dependencies.compose_activity
+    implementation Dependencies.kotlin_work
+
+    //COMPOSE DEPENDENCIES
+    implementation Dependencies.compose_viewmodel_lifecycle
+    implementation Dependencies.compose_navigation
+    implementation Dependencies.compose_icons_extended
+    implementation Dependencies.compose_hilt_navigation
+    implementation Dependencies.compose_animated_navigation
+    implementation Dependencies.compose_system_ui_controller
+    implementation Dependencies.compose_constraint_layout
+
+    //COROUTINES
+    implementation Dependencies.coroutines_core
+    implementation Dependencies.coroutines_android
+
+    //LIVEDATA
+    implementation Dependencies.livedata_lifecycle
+    implementation Dependencies.livedata_compose_runtime
+
+
+    //DAGGER HILT
+    implementation Dependencies.dagger_hilt
+    kapt Dependencies.dagger_hilt_compiler
+    implementation Dependencies.hilt_navigation
+    implementation Dependencies.hilt_work
+    kapt Dependencies.hilt_compiler
+
+    //NETWORK and SERIALIZATION
+    implementation Dependencies.retrofit
+    implementation Dependencies.kotlin_serialization
+    implementation Dependencies.gson_converter
+    implementation Dependencies.gson
+    implementation Dependencies.okhttp3_okhttp
+    implementation Dependencies.okhttp3_logging_interceptor
+
+    //DATASTORE
+    implementation Dependencies.datastore_protobuf
+    implementation Dependencies.datastore_preferences
+
+    //ROOM
+    implementation Dependencies.room_runtime
+    implementation Dependencies.room_ktx
+    kapt Dependencies.room_compiler
+
+    //GLIDE
+    implementation Dependencies.glide_landscapist
+
+    //TIMBER
+    implementation Dependencies.timber
+
+    //LOCAL UNIT TESTS
+    testImplementation Dependencies.test_core
+    testImplementation Dependencies.test_junit
+    testImplementation Dependencies.test_arch_core
+    testImplementation Dependencies.test_coroutines
+    testImplementation Dependencies.test_google_truth
+    testImplementation Dependencies.test_mock_webserver
+    testImplementation Dependencies.test_mockk
+    testImplementation Dependencies.test_flow_turbine
+    debugImplementation Dependencies.test_compose_ui_manifest
+
+    //INSTRUMENTATION TESTS
+    androidTestImplementation Dependencies.test_dagger_hilt
+    kaptAndroidTest Dependencies.dagger_hilt_compiler
+    androidTestImplementation Dependencies.test_junit
+    androidTestImplementation Dependencies.test_arch_core
+    androidTestImplementation Dependencies.test_coroutines
+    androidTestImplementation Dependencies.test_google_truth
+    androidTestImplementation Dependencies.test_mock_webserver
+    androidTestImplementation Dependencies.test_mockk
+    androidTestImplementation Dependencies.test_ext_junit
+    androidTestImplementation Dependencies.test_ktx_core
+    androidTestImplementation Dependencies.test_runner
+    androidTestImplementation Dependencies.test_espresso_core
+    androidTestImplementation Dependencies.test_compose_ui_junit
+    debugImplementation Dependencies.test_compose_ui_tooling
+
 }
