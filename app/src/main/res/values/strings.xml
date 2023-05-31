@@ -1,3 +1,5 @@
 <resources>
 
+
+    <string name="title_activity_account">AccountActivity</string>
 </resources>
