@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import com.example.mosisprojekat.ui.screens.account.onboarding.OnBoardingScreen
 import com.example.mosisprojekat.ui.screens.account.splash.SplashScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -42,6 +43,12 @@ fun AccountActivityNavigation() {
             route = Routes.SPLASH_SCREEN
         ) {
             SplashScreen(navController)
+        }
+
+        composable(
+            route = Routes.ON_BOARDING_SCREEN
+        ) {
+            OnBoardingScreen(navController)
         }
     }
 }
