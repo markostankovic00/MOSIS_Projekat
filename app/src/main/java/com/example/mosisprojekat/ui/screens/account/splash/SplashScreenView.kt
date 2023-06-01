@@ -15,7 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.mosisprojekat.ui.navigation.Routes
 import com.example.mosisprojekat.ui.screens.account.splash.SplashScreenViewModel.Events
-import com.example.mosisprojekat.ui.uiutil.composables.BackgroundPatternBox
+import com.example.mosisprojekat.ui.uiutil.composables.BoxWithBackgroundPattern
 import com.example.mosisprojekat.ui.uiutil.composables.LogoImage
 
 @Composable
@@ -47,7 +47,7 @@ private fun LaunchScreenView(
         viewModel.navigateToOnBoarding()
     }
 
-    BackgroundPatternBox(
+    BoxWithBackgroundPattern(
         modifier = Modifier
             .clickable(
                 interactionSource = interactionSource,

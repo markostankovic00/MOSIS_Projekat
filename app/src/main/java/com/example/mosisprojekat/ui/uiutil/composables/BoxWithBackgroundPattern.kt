@@ -11,10 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.mosisprojekat.ui.theme.BackgroundPatternColor
 import com.example.mosisprojekat.ui.theme.MosisProjekatTheme
 
 @Composable
-fun BackgroundPatternBox(
+fun BoxWithBackgroundPattern(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -25,7 +26,7 @@ fun BackgroundPatternBox(
             .background(
                 brush = Brush.verticalGradient(
                     listOf(
-                        MaterialTheme.colors.primary,
+                        BackgroundPatternColor,
                         MaterialTheme.colors.background
                     ),
                 )
@@ -39,7 +40,7 @@ fun BackgroundPatternBox(
 @Composable
 private fun BackgroundPatternPreview() {
     MosisProjekatTheme {
-        BackgroundPatternBox {
+        BoxWithBackgroundPattern {
             Text(
                 text = "Background pattern",
                 color = MaterialTheme.colors.onBackground,

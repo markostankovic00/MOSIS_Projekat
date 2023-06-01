@@ -18,6 +18,7 @@ import com.example.mosisprojekat.ui.theme.PrimaryButtonBackgroundColor
 fun PrimaryButton(
     modifier: Modifier = Modifier,
     text: String,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
@@ -27,6 +28,7 @@ fun PrimaryButton(
             backgroundColor = PrimaryButtonBackgroundColor,
             contentColor = MaterialTheme.colors.primary
         ),
+        enabled = enabled,
         onClick = onClick
     ) {
         Text(

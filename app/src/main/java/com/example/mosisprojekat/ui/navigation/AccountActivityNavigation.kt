@@ -6,7 +6,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import com.example.mosisprojekat.ui.screens.account.login.LogInScreen
 import com.example.mosisprojekat.ui.screens.account.onboarding.OnBoardingScreen
+import com.example.mosisprojekat.ui.screens.account.signup.SignUpScreen
 import com.example.mosisprojekat.ui.screens.account.splash.SplashScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -49,6 +51,18 @@ fun AccountActivityNavigation() {
             route = Routes.ON_BOARDING_SCREEN
         ) {
             OnBoardingScreen(navController)
+        }
+
+        composable(
+            route = Routes.LOG_IN_SCREEN
+        ) {
+            LogInScreen(navController)
+        }
+
+        composable(
+            route = Routes.SIGN_UP_SCREEN
+        ) {
+            SignUpScreen(navController)
         }
     }
 }

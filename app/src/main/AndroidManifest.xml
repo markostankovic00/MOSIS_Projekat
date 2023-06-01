@@ -19,7 +19,6 @@
         <activity
             android:name="com.example.mosisprojekat.ui.activities.AccountActivity"
             android:exported="true"
-            android:label="@string/title_activity_account"
             android:theme="@style/Theme.MosisProjekat"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">

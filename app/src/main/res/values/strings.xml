@@ -1,5 +1,21 @@
 <resources>
-
-
     <string name="title_activity_account">AccountActivity</string>
+
+    //ONBOARDING SCREEN
+    <string name="on_boarding_screen_slogan">Training\'s never been easier</string>
+    <string name="on_boarding_screen_log_in_button">Log In</string>
+    <string name="on_boarding_screen_sign_up_button">Sign Up</string>
+
+    //LOGIN SCREEN
+    <string name="log_in_screen_title">Log In</string>
+    <string name="log_in_screen_username_label">Username</string>
+    <string name="log_in_screen_password_label">Password</string>
+    <string name="log_in_screen_log_in_button">Log In</string>
+    <string name="log_in_screen_dont_have_an_account">Don\'t have an account?</string>
+    <string name="log_in_screen_dont_have_an_account_press_here">Sign Up</string>
+
+    //ERRORS
+    <string name="error_cant_be_empty">Can\'t be empty</string>
+    <string name="error_passwords_dont_match">Passwords don\'t match</string>
+
 </resources>

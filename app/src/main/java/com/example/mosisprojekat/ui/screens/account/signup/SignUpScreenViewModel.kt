@@ -1,4 +1,4 @@
-package com.example.mosisprojekat.ui.screens.account.onboarding
+package com.example.mosisprojekat.ui.screens.account.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,23 +8,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OnBoardingScreenViewModel @Inject constructor(
+class SignUpScreenViewModel @Inject constructor(
 
 ): ViewModel() {
 
     val events = MutableSharedFlow<Events?>(replay = 0)
 
+    fun navigateToHomeScreen() = viewModelScope.launch {
+        //events.emit(Events.NavigateToHomeScreen)
+    }
+
     fun navigateToLogIn() = viewModelScope.launch {
         events.emit(Events.NavigateToLogIn)
     }
 
-    fun navigateToSignUp() = viewModelScope.launch {
-        events.emit(Events.NavigateToSignUp)
-    }
-
-
     sealed class Events {
+        object NavigateToHomeScreen: Events()
         object NavigateToLogIn: Events()
-        object NavigateToSignUp: Events()
     }
 }
