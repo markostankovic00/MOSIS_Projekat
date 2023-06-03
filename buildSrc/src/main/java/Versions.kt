@@ -1,6 +1,7 @@
 object Versions {
 
     const val compose_version = "1.3.1"
+    const val firebase_version = "32.1.0"
     const val ktx_core_version = "1.9.0"
     const val android_material_version = "1.8.0"
     const val lifecycle_version = "2.6.0-alpha04"

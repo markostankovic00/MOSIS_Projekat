@@ -9,6 +9,7 @@ import Versions.coroutines_android_version
 import Versions.coroutines_core_version
 import Versions.dagger_hilt_version
 import Versions.datastore_version
+import Versions.firebase_version
 import Versions.glide_landscapist_version
 import Versions.gson_converter_version
 import Versions.gson_version
@@ -64,6 +65,10 @@ object Dependencies {
     //LIVEDATA
     const val livedata_lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     const val livedata_compose_runtime = "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+    //FIREBASE
+    const val firebase_platform = "com.google.firebase:firebase-bom:$firebase_version"
+    const val firebase_authentication = "com.google.firebase:firebase-auth-ktx"
 
     //DAGGER HILT
     const val dagger_hilt = "com.google.dagger:hilt-android:$dagger_hilt_version"
