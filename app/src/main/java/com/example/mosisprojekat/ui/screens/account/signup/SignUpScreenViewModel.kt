@@ -16,11 +16,23 @@ class SignUpScreenViewModel @Inject constructor(
 
     val events = MutableSharedFlow<Events?>(replay = 0)
 
+    val nameTextState = mutableStateOf("")
+
+    val surnameTextState = mutableStateOf("")
+
     val emailTextState = mutableStateOf("")
 
     val passwordTextState = mutableStateOf("")
 
     val repeatPasswordTextState = mutableStateOf("")
+
+    fun onNameTextChanged(name: String) {
+        nameTextState.value = name
+    }
+
+    fun onSurnameTextChanged(surname: String) {
+        surnameTextState.value = surname
+    }
 
     fun onEmailTextChanged(email: String) {
         emailTextState.value = email

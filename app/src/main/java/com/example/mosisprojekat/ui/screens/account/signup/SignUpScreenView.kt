@@ -64,6 +64,14 @@ private fun SignUpScreenView(
 
     val scrollState = rememberScrollState()
 
+    val nameFocusRequester = remember { FocusRequester() }
+    val nameTextState by rememberSaveable { viewModel.nameTextState}
+    val isErrorMessagePairName = validateNotEmpty(nameTextState, context)
+
+    val surnameFocusRequester = remember { FocusRequester() }
+    val surnameTextState by rememberSaveable { viewModel.surnameTextState}
+    val isErrorMessagePairSurname = validateNotEmpty(surnameTextState, context)
+
     val emailFocusRequester = remember { FocusRequester() }
     val emailTextState by rememberSaveable { viewModel.emailTextState}
     val isErrorMessagePairEmail = validateSignUpEmailTextField(emailTextState, context)
@@ -79,7 +87,9 @@ private fun SignUpScreenView(
     val isErrorMessagePairRepeatPassword =
         validateRepeatPasswordTextField(repeatPasswordTextState, passwordTextState, context)
 
-    val signUpButtonEnabled = !isErrorMessagePairEmail.first &&
+    val signUpButtonEnabled = !isErrorMessagePairName.first &&
+            !isErrorMessagePairSurname.first &&
+            !isErrorMessagePairEmail.first &&
             !isErrorMessagePairPassword.first &&
             !isErrorMessagePairRepeatPassword.first
 
@@ -94,23 +104,73 @@ private fun SignUpScreenView(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(top = MaterialTheme.spacing.extraLarge),
+                .padding(top = MaterialTheme.spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 modifier = Modifier
-                    .padding(MaterialTheme.spacing.large),
+                    .padding(MaterialTheme.spacing.medium),
                 text = stringResource(id = R.string.sign_up_screen_title),
                 style = MaterialTheme.typography.h1,
                 color = MaterialTheme.colors.onBackground
             )
+
+            //name text field
+            Column {
+                PrimaryOutlinedTextField(
+                    modifier = Modifier
+                        .focusRequester(nameFocusRequester)
+                        .padding(top = MaterialTheme.spacing.medium),
+                    textStateValue = nameTextState,
+                    onValueChange = viewModel::onNameTextChanged,
+                    label = stringResource(id = R.string.sign_up_screen_name_label),
+                    isError = isErrorMessagePairName.first,
+                    onNext = {
+                        focusManager.clearFocus()
+                        surnameFocusRequester.requestFocus()
+                    },
+                    onTrailingIconClick = { viewModel.onNameTextChanged("") }
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.spacing.extraSmall),
+                    text = isErrorMessagePairName.second,
+                    color = if (isErrorMessagePairName.first) RedError else GreenValid
+                )
+            }
+
+            //surname text field
+            Column {
+                PrimaryOutlinedTextField(
+                    modifier = Modifier
+                        .focusRequester(surnameFocusRequester)
+                        .padding(top = MaterialTheme.spacing.medium),
+                    textStateValue = surnameTextState,
+                    onValueChange = viewModel::onSurnameTextChanged,
+                    label = stringResource(id = R.string.sign_up_screen_surname_label),
+                    isError = isErrorMessagePairSurname.first,
+                    onNext = {
+                        focusManager.clearFocus()
+                        emailFocusRequester.requestFocus()
+                    },
+                    onTrailingIconClick = { viewModel.onSurnameTextChanged("") }
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = MaterialTheme.spacing.extraSmall),
+                    text = isErrorMessagePairSurname.second,
+                    color = if (isErrorMessagePairSurname.first) RedError else GreenValid
+                )
+            }
 
             //email text field
             Column {
                 PrimaryOutlinedTextField(
                     modifier = Modifier
                         .focusRequester(emailFocusRequester)
-                        .padding(top = MaterialTheme.spacing.large),
+                        .padding(top = MaterialTheme.spacing.medium),
                     textStateValue = emailTextState,
                     onValueChange = viewModel::onEmailTextChanged,
                     label = stringResource(id = R.string.sign_up_screen_email_label),
@@ -135,7 +195,7 @@ private fun SignUpScreenView(
                 PrimaryOutlinedTextField(
                     modifier = Modifier
                         .focusRequester(passwordFocusRequester)
-                        .padding(top = MaterialTheme.spacing.large),
+                        .padding(top = MaterialTheme.spacing.medium),
                     textStateValue = passwordTextState,
                     onValueChange = viewModel::onPasswordTextChanged,
                     label = stringResource(id = R.string.sign_up_screen_password_label),
@@ -171,7 +231,7 @@ private fun SignUpScreenView(
                 PrimaryOutlinedTextField(
                     modifier = Modifier
                         .focusRequester(repeatPasswordFocusRequester)
-                        .padding(top = MaterialTheme.spacing.large),
+                        .padding(top = MaterialTheme.spacing.medium),
                     textStateValue = repeatPasswordTextState,
                     onValueChange = viewModel::onRepeatPasswordTextChanged,
                     label = stringResource(id = R.string.sign_up_screen_repeat_password_label),
@@ -206,7 +266,7 @@ private fun SignUpScreenView(
             //button sector
             PrimaryButton(
                 modifier = Modifier
-                    .padding(top = MaterialTheme.spacing.extraLarge)
+                    .padding(top = MaterialTheme.spacing.large)
                     .height(57.dp)
                     .width(150.dp),
                 enabled = signUpButtonEnabled,
@@ -216,7 +276,7 @@ private fun SignUpScreenView(
 
             Row(
                 Modifier
-                    .padding(top = MaterialTheme.spacing.large),
+                    .padding(vertical = MaterialTheme.spacing.large),
             ) {
                 Text(
                     modifier = Modifier

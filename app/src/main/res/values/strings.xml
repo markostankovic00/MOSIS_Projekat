@@ -16,6 +16,8 @@
 
     //SIGN UP SCREEN
     <string name="sign_up_screen_title">Sign Up</string>
+    <string name="sign_up_screen_name_label">Name</string>
+    <string name="sign_up_screen_surname_label">Surname</string>
     <string name="sign_up_screen_email_label">Email</string>
     <string name="sign_up_screen_password_label">Password</string>
     <string name="sign_up_screen_repeat_password_label">Repeat Password</string>
