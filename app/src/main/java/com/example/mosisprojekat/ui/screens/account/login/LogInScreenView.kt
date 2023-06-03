@@ -214,7 +214,7 @@ private fun EventsHandler(
                 navController.navigate(Routes.SIGN_UP_SCREEN)
             }
             Events.MakeLoginErrorToast -> {
-                Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getText(R.string.error_invalid_login), Toast.LENGTH_SHORT).show()
                 viewModel.clearEventChannel()
             }
             else -> {}

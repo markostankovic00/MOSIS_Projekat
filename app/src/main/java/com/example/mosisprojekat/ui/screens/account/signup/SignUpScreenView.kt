@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.mosisprojekat.R
 import com.example.mosisprojekat.ui.activities.MainActivity
 import com.example.mosisprojekat.ui.navigation.Routes
 import com.example.mosisprojekat.ui.screens.account.signup.SignUpScreenViewModel.Events
@@ -99,7 +100,7 @@ private fun SignUpScreenView(
             Text(
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.large),
-                text = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_title),
+                text = stringResource(id = R.string.sign_up_screen_title),
                 style = MaterialTheme.typography.h1,
                 color = MaterialTheme.colors.onBackground
             )
@@ -112,7 +113,7 @@ private fun SignUpScreenView(
                         .padding(top = MaterialTheme.spacing.large),
                     textStateValue = emailTextState,
                     onValueChange = viewModel::onEmailTextChanged,
-                    label = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_email_label),
+                    label = stringResource(id = R.string.sign_up_screen_email_label),
                     isError = isErrorMessagePairEmail.first,
                     onNext = {
                         focusManager.clearFocus()
@@ -137,7 +138,7 @@ private fun SignUpScreenView(
                         .padding(top = MaterialTheme.spacing.large),
                     textStateValue = passwordTextState,
                     onValueChange = viewModel::onPasswordTextChanged,
-                    label = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_password_label),
+                    label = stringResource(id = R.string.sign_up_screen_password_label),
                     isError = isErrorMessagePairPassword.first,
                     imeAction = ImeAction.Next,
                     onNext = {
@@ -173,7 +174,7 @@ private fun SignUpScreenView(
                         .padding(top = MaterialTheme.spacing.large),
                     textStateValue = repeatPasswordTextState,
                     onValueChange = viewModel::onRepeatPasswordTextChanged,
-                    label = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_repeat_password_label),
+                    label = stringResource(id = R.string.sign_up_screen_repeat_password_label),
                     isError = isErrorMessagePairRepeatPassword.first,
                     imeAction = ImeAction.Done,
                     onDone = {
@@ -209,7 +210,7 @@ private fun SignUpScreenView(
                     .height(57.dp)
                     .width(150.dp),
                 enabled = signUpButtonEnabled,
-                text = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_sign_up_button),
+                text = stringResource(id = R.string.sign_up_screen_sign_up_button),
                 onClick = viewModel::onSignUpClick
             )
 
@@ -221,7 +222,7 @@ private fun SignUpScreenView(
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.spacing.extraSmall),
                     style = MaterialTheme.typography.body1,
-                    text = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_already_have_an_account),
+                    text = stringResource(id = R.string.sign_up_screen_already_have_an_account),
                     color = MaterialTheme.colors.onBackground
                 )
                 Text(
@@ -229,7 +230,7 @@ private fun SignUpScreenView(
                         .clickable { viewModel.navigateToLogIn() }
                         .padding(horizontal = MaterialTheme.spacing.extraSmall),
                     style = MaterialTheme.typography.body1,
-                    text = stringResource(id = com.example.mosisprojekat.R.string.sign_up_screen_already_have_an_account_press_here),
+                    text = stringResource(id = R.string.sign_up_screen_already_have_an_account_press_here),
                     color = LinkColor
                 )
             }
@@ -259,7 +260,7 @@ private fun EventsHandler(
                 navController.navigate(Routes.LOG_IN_SCREEN)
             }
             Events.MakeSignupErrorToast -> {
-                Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getText(R.string.error_invalid_signup), Toast.LENGTH_SHORT).show()
                 viewModel.clearEventChannel()
             }
             else -> {}

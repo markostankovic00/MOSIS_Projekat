@@ -28,5 +28,7 @@
     <string name="error_password_must_have_6_chars">Password must be at least 6 characters</string>
     <string name="error_invalid_email">A valid email is required</string>
     <string name="error_passwords_dont_match">Passwords don\'t match</string>
+    <string name="error_invalid_login">Invalid email or password</string>
+    <string name="error_invalid_signup">Something went wrong!</string>
 
 </resources>

@@ -32,15 +32,19 @@ class LogInScreenViewModel @Inject constructor(
         if(emailTextState.value == "admin" && passwordTextState.value == "admin")
             navigateToHomeScreen()
         else {
-
-            authRepository.logInUser(
-                email = emailTextState.value,
-                password = passwordTextState.value
-            ) { isSuccessful ->
-                if (isSuccessful)
-                    navigateToHomeScreen()
-                else
-                    makeLoginErrorToast()
+            try {
+                authRepository.logInUser(
+                    email = emailTextState.value,
+                    password = passwordTextState.value
+                ) { isSuccessful ->
+                    if (isSuccessful)
+                        navigateToHomeScreen()
+                    else
+                        makeLoginErrorToast()
+                }
+            } catch (e:Exception) {
+                makeLoginErrorToast()
+                e.printStackTrace()
             }
         }
     }

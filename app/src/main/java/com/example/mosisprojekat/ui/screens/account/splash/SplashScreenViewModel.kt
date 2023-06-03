@@ -16,10 +16,15 @@ class SplashScreenViewModel @Inject constructor(
     val events = MutableSharedFlow<Events?>(replay = 0)
 
     fun onEndOfAnimation() = viewModelScope.launch {
-        if(authRepository.hasUser())
-            navigateToHome()
-        else
+        try {
+            if(authRepository.hasUser())
+                navigateToHome()
+            else
+                navigateToOnBoarding()
+        } catch (e:Exception) {
             navigateToOnBoarding()
+            e.printStackTrace()
+        }
     }
 
     private fun navigateToHome() = viewModelScope.launch {

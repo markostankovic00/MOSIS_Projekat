@@ -38,14 +38,19 @@ class SignUpScreenViewModel @Inject constructor(
 
         navigateToHomeScreen()
 
-        authRepository.signUpUser(
-            email = emailTextState.value,
-            password = passwordTextState.value
-        ) { isSuccessful ->
-            if (isSuccessful)
-                navigateToHomeScreen()
-            else
-                makeSignUpErrorToast()
+        try {
+            authRepository.signUpUser(
+                email = emailTextState.value,
+                password = passwordTextState.value
+            ) { isSuccessful ->
+                if (isSuccessful)
+                    navigateToHomeScreen()
+                else
+                    makeSignUpErrorToast()
+            }
+        } catch (e:Exception) {
+            makeSignUpErrorToast()
+            e.printStackTrace()
         }
     }
 
