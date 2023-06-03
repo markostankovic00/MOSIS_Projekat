@@ -15,12 +15,12 @@ class LogInScreenViewModel @Inject constructor(
 
     val events = MutableSharedFlow<Events?>(replay = 0)
 
-    val usernameTextState = mutableStateOf("")
+    val emailTextState = mutableStateOf("")
 
     val passwordTextState = mutableStateOf("")
 
-    fun onUsernameTextChanged(username: String) {
-        usernameTextState.value = username
+    fun onEmailTextChanged(email: String) {
+        emailTextState.value = email
     }
 
     fun onPasswordTextChanged(password: String) {
@@ -29,7 +29,7 @@ class LogInScreenViewModel @Inject constructor(
 
     fun onLogInClick() = viewModelScope.launch {
 
-        if(usernameTextState.value == "admin" && passwordTextState.value == "admin")
+        if(emailTextState.value == "admin" && passwordTextState.value == "admin")
             navigateToHomeScreen()
         else
             events.emit(Events.MakeToast)

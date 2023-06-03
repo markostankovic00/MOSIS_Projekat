@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.mosisprojekat.R
@@ -43,8 +42,7 @@ import com.example.mosisprojekat.ui.uiutil.composables.BoxWithBackgroundPattern
 import com.example.mosisprojekat.ui.uiutil.composables.PrimaryButton
 import com.example.mosisprojekat.ui.uiutil.composables.PrimaryOutlinedTextField
 import com.example.mosisprojekat.util.findActivity
-import com.example.mosisprojekat.util.validatePasswordTextField
-import com.example.mosisprojekat.util.validateUsernameTextField
+import com.example.mosisprojekat.util.validateNotEmpty
 
 @ExperimentalAnimationApi
 @Composable
@@ -67,16 +65,16 @@ private fun LogInScreenView(
 
     val scrollState = rememberScrollState()
 
-    val usernameFocusRequester = remember { FocusRequester() }
-    val usernameTextState by rememberSaveable { viewModel.usernameTextState}
-    val isErrorMessagePairUsername = validateUsernameTextField(usernameTextState, context)
+    val emailFocusRequester = remember { FocusRequester() }
+    val emailTextState by rememberSaveable { viewModel.emailTextState}
+    val isErrorMessagePairEmail = validateNotEmpty(emailTextState, context)
 
     val passwordFocusRequester = remember { FocusRequester() }
     var passwordVisibility by remember { mutableStateOf(false) }
     val passwordTextState by rememberSaveable { viewModel.passwordTextState }
-    val isErrorMessagePairPassword = validatePasswordTextField(passwordTextState, context)
+    val isErrorMessagePairPassword = validateNotEmpty(passwordTextState, context)
 
-    val logInButtonEnabled = !isErrorMessagePairUsername.first && !isErrorMessagePairPassword.first
+    val logInButtonEnabled = !isErrorMessagePairEmail.first && !isErrorMessagePairPassword.first
 
     BoxWithBackgroundPattern(
         modifier = Modifier
@@ -100,28 +98,28 @@ private fun LogInScreenView(
                 color = MaterialTheme.colors.onBackground
             )
 
-            //username text field
+            //email text field
             Column {
                 PrimaryOutlinedTextField(
                     modifier = Modifier
-                        .focusRequester(usernameFocusRequester)
+                        .focusRequester(emailFocusRequester)
                         .padding(top = MaterialTheme.spacing.large),
-                    textStateValue = usernameTextState,
-                    onValueChange = viewModel::onUsernameTextChanged,
-                    label = stringResource(id = R.string.log_in_screen_username_label),
-                    isError = isErrorMessagePairUsername.first,
+                    textStateValue = emailTextState,
+                    onValueChange = viewModel::onEmailTextChanged,
+                    label = stringResource(id = R.string.log_in_screen_email_label),
+                    isError = isErrorMessagePairEmail.first,
                     onNext = {
                         focusManager.clearFocus()
                         passwordFocusRequester.requestFocus()
                     },
-                    onTrailingIconClick = { viewModel.onUsernameTextChanged("") }
+                    onTrailingIconClick = { viewModel.onEmailTextChanged("") }
                 )
 
                 Text(
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.spacing.extraSmall),
-                    text = isErrorMessagePairUsername.second,
-                    color = if (isErrorMessagePairUsername.first) RedError else GreenValid
+                    text = isErrorMessagePairEmail.second,
+                    color = if (isErrorMessagePairEmail.first) RedError else GreenValid
                 )
             }
 
@@ -216,7 +214,7 @@ private fun EventsHandler(
                 navController.navigate(Routes.SIGN_UP_SCREEN)
             }
             Events.MakeToast -> {
-                Toast.makeText(context, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
             }
             else -> {}
         }
