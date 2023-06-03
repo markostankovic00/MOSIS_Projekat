@@ -1,6 +1,7 @@
 package com.example.mosisprojekat.ui.screens.account.signup
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,9 +40,7 @@ import com.example.mosisprojekat.ui.theme.spacing
 import com.example.mosisprojekat.ui.uiutil.composables.BoxWithBackgroundPattern
 import com.example.mosisprojekat.ui.uiutil.composables.PrimaryButton
 import com.example.mosisprojekat.ui.uiutil.composables.PrimaryOutlinedTextField
-import com.example.mosisprojekat.util.findActivity
-import com.example.mosisprojekat.util.validateNotEmpty
-import com.example.mosisprojekat.util.validateRepeatPasswordTextField
+import com.example.mosisprojekat.util.*
 
 @ExperimentalAnimationApi
 @Composable
@@ -66,12 +65,12 @@ private fun SignUpScreenView(
 
     val emailFocusRequester = remember { FocusRequester() }
     val emailTextState by rememberSaveable { viewModel.emailTextState}
-    val isErrorMessagePairEmail = validateNotEmpty(emailTextState, context)
+    val isErrorMessagePairEmail = validateSignUpEmailTextField(emailTextState, context)
 
     val passwordFocusRequester = remember { FocusRequester() }
     var passwordVisibility by remember { mutableStateOf(false) }
     val passwordTextState by rememberSaveable { viewModel.passwordTextState }
-    val isErrorMessagePairPassword = validateNotEmpty(passwordTextState, context)
+    val isErrorMessagePairPassword = validateSignUpPasswordTextField(passwordTextState, context)
 
     val repeatPasswordFocusRequester = remember { FocusRequester() }
     var repeatPasswordVisibility by remember { mutableStateOf(false) }
@@ -258,6 +257,10 @@ private fun EventsHandler(
             Events.NavigateToLogIn -> {
                 navController.popBackStack()
                 navController.navigate(Routes.LOG_IN_SCREEN)
+            }
+            Events.MakeSignupErrorToast -> {
+                Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
+                viewModel.clearEventChannel()
             }
             else -> {}
         }

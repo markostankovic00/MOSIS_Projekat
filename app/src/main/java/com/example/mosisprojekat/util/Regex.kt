@@ -1,8 +1,30 @@
 package com.example.mosisprojekat.util
 
 import android.content.Context
+import android.util.Patterns
 import com.example.mosisprojekat.R
 
+fun validateNotEmpty(textState: String, context: Context): Pair<Boolean, String> {
+    return if (textState.isEmpty()) {
+        Pair(true, context.getString(R.string.error_cant_be_empty))
+    } else Pair(false, "")
+}
+
+fun validateSignUpEmailTextField(email: String, context: Context): Pair<Boolean, String> {
+    return if (email.isEmpty()) {
+        Pair(true, context.getString(R.string.error_cant_be_empty))
+    } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        Pair(true, context.getString(R.string.error_invalid_email))
+    } else Pair(false, "")
+}
+
+fun validateSignUpPasswordTextField(password: String, context: Context): Pair<Boolean, String> {
+    return if (password.isEmpty()) {
+        Pair(true, context.getString(R.string.error_cant_be_empty))
+    } else if (password.length < 6) {
+        Pair(true, context.getString(R.string.error_password_must_have_6_chars))
+    } else Pair(false, "")
+}
 
 fun validateRepeatPasswordTextField(
     repeatPasswordTextState: String,
@@ -16,10 +38,4 @@ fun validateRepeatPasswordTextField(
     } else {
         Pair(false, "")
     }
-}
-
-fun validateNotEmpty(textState: String, context: Context): Pair<Boolean, String> {
-    return if (textState.isEmpty()) {
-        Pair(true, context.getString(R.string.error_cant_be_empty))
-    } else Pair(false, "")
 }

@@ -25,6 +25,8 @@
 
     //ERRORS
     <string name="error_cant_be_empty">Can\'t be empty</string>
+    <string name="error_password_must_have_6_chars">Password must be at least 6 characters</string>
+    <string name="error_invalid_email">A valid email is required</string>
     <string name="error_passwords_dont_match">Passwords don\'t match</string>
 
 </resources>
