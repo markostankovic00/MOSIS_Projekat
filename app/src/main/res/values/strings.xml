@@ -25,6 +25,9 @@
     <string name="sign_up_screen_already_have_an_account">Already have an account?</string>
     <string name="sign_up_screen_already_have_an_account_press_here">Log In</string>
 
+    //RANKINGS SCREEN
+    <string name="rankings_screen_title">Rankings</string>
+
     //PROFILE SCREEN
     <string name="profile_screen_title">Profile</string>
     <string name="profile_screen_log_out_button">Log Out</string>

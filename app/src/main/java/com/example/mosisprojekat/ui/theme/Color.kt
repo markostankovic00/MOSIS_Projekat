@@ -13,6 +13,7 @@ val SurfaceColor = Color(0xFF272727)
 val OnSurfaceColor = Color(0xFFFFFFFF)
 val PrimaryColor = Color(0xFFBA68C8)
 val BackgroundPatternColor = Color(0xBBBA68C8)
+val RankingRowHighlightColor = Color(0x55BA68C8)
 val PrimaryButtonBackgroundColor = Color(0xFFFFFFFF)
 val GreyLight = Color(0xFFBDBDBD)
 
