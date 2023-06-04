@@ -10,4 +10,6 @@ object Routes {
 
     //main
     const val HOME_SCREEN = "home_screen"
+    const val PROFILE_SCREEN = "profile_screen"
+    const val RANKINGS_SCREEN = "rankings_screen"
 }
