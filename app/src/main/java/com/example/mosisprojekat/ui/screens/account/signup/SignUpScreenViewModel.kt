@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mosisprojekat.repository.interactors.AuthRepositoryInteractor
+import com.example.mosisprojekat.repository.interactors.UsersDataRepositoryInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpScreenViewModel @Inject constructor(
-    private val authRepository: AuthRepositoryInteractor
+    private val authRepository: AuthRepositoryInteractor,
+    private val usersDataRepository: UsersDataRepositoryInteractor
 ): ViewModel() {
 
     val events = MutableSharedFlow<Events?>(replay = 0)
@@ -56,7 +58,21 @@ class SignUpScreenViewModel @Inject constructor(
                 password = passwordTextState.value.trim()
             ) { isSuccessful ->
                 if (isSuccessful)
-                    navigateToHomeScreen()
+                    //navigateToHomeScreen()
+
+                    usersDataRepository.addUserData(
+                        userId = authRepository.getUserId(),
+                        name = nameTextState.value.trim(),
+                        surname = surnameTextState.value.trim(),
+                        email = emailTextState.value.trim(),
+                        points = 0
+                    ) { isSuccessfulUserData ->
+                        if (isSuccessfulUserData)
+                            navigateToHomeScreen()
+                        else
+                            makeSignUpErrorToast()
+                    }
+
                 else
                     makeSignUpErrorToast()
             }

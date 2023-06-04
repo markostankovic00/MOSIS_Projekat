@@ -82,7 +82,7 @@ private fun RankingsScreenView(
                         name = user.name,
                         surname = user.surname,
                         points = user.points,
-                        isCurrentUser = user.authID == currentUserID
+                        isCurrentUser = user.userId == currentUserID
                     )
                 }
             }

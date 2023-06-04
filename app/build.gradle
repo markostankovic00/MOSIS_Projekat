@@ -113,6 +113,7 @@ dependencies {
     //FIREBASE
     implementation platform(Dependencies.firebase_platform)
     implementation Dependencies.firebase_authentication
+    implementation Dependencies.firebase_firestore
 
 
     //DAGGER HILT

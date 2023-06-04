@@ -2,7 +2,9 @@ package com.example.mosisprojekat.ui.screens.main.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mosisprojekat.models.UserData
 import com.example.mosisprojekat.repository.interactors.AuthRepositoryInteractor
+import com.example.mosisprojekat.repository.interactors.UsersDataRepositoryInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(
-    private val authRepository: AuthRepositoryInteractor
+    private val authRepository: AuthRepositoryInteractor,
+    private val userDataRepository: UsersDataRepositoryInteractor
 ): ViewModel() {
 
     val events = MutableSharedFlow<Events?>(replay = 0)
+
+    private val _userData = MutableStateFlow<List<UserData>>(emptyList())
 
     private val _name = MutableStateFlow("")
     var name = _name.asStateFlow()
@@ -27,14 +32,26 @@ class ProfileScreenViewModel @Inject constructor(
     var email = _email.asStateFlow()
 
     init {
-        try {
-            //TODO set name and surname with firebase data
-            _name.value = "Marko"
-            _surname.value = "Stankovic"
-            _email.value = authRepository.currentUser?.email ?: ""
-        } catch(e: Exception) {
-            makeGenericErrorToast()
-            e.printStackTrace()
+        viewModelScope.launch {
+            try {
+                if(authRepository.hasUser()) {
+                    loadUserData(authRepository.getUserId())
+                }
+            } catch(e: Exception) {
+                makeGenericErrorToast()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun loadUserData(userId: String) = viewModelScope.launch {
+        userDataRepository.getUserData(userId).collect{
+            _userData.value = it.data ?: emptyList()
+            if(_userData.value.isNotEmpty()) {
+                _name.value = _userData.value[0].name
+                _surname.value = _userData.value[0].surname
+                _email.value = _userData.value[0].email
+            }
         }
     }
 

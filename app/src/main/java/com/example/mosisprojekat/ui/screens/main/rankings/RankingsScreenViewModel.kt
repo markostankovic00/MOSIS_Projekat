@@ -47,70 +47,70 @@ class RankingsScreenViewModel @Inject constructor(
 
     private fun getHardcodedListOfUsers() = listOf(
         UserData(
-            authID = "",
+            userId = "",
             name = "Name1",
             surname = "Surname1",
             email = "Email1",
             points = 1000
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name2",
             surname = "Surname2",
             email = "Email2",
             points = 100
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name3",
             surname = "Surname3",
             email = "Email3",
             points = 10
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name4",
             surname = "Surname4",
             email = "Email4",
             points = 120
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name5",
             surname = "Surname5",
             email = "Email5",
             points = 200
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name6",
             surname = "Surname6",
             email = "Email6",
             points = 350
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name7",
             surname = "Surname7",
             email = "Email7",
             points = 10
         ),
         UserData(
-            authID = "HMBIQCe4HcRx0ehlfGo0SRABysO2",
+            userId = "HMBIQCe4HcRx0ehlfGo0SRABysO2",
             name = "Name8",
             surname = "Surname8",
             email = "Email8",
             points = 700
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name9",
             surname = "Surname9",
             email = "Email9",
             points = 800
         ),
         UserData(
-            authID = "",
+            userId = "",
             name = "Name10",
             surname = "Surname10",
             email = "Email10",
