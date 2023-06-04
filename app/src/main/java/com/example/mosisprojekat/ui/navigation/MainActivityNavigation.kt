@@ -1,6 +1,7 @@
 package com.example.mosisprojekat.ui.navigation
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.tween
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -31,10 +33,11 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @ExperimentalAnimationApi
 @Composable
-fun MainActivityLayoutAndNavigation() {
+fun MainActivityLayoutAndNavigation(
+    viewModel: MainViewModel
+) {
 
     val navController = rememberAnimatedNavController()
-    val viewModel = hiltViewModel<MainViewModel>()
 
     NavHostAndBottomNavigation(navController, viewModel)
     EventsHandler(navController, viewModel)
@@ -84,7 +87,7 @@ private fun NavHostAndBottomNavigation(
             )
         }
     ) {
-        AnimatedNavigation(navController)
+        AnimatedNavigation(viewModel, navController)
     }
 
 }
@@ -92,6 +95,7 @@ private fun NavHostAndBottomNavigation(
 @ExperimentalAnimationApi
 @Composable
 private fun AnimatedNavigation(
+    mainViewModel: MainViewModel,
     navController: NavHostController
 ) {
     AnimatedNavHost(
@@ -118,7 +122,7 @@ private fun AnimatedNavigation(
         composable(
             route = Routes.HOME_SCREEN
         ) {
-            HomeScreen(navController)
+            HomeScreen(mainViewModel, navController)
         }
 
         composable(
@@ -141,6 +145,8 @@ private fun EventsHandler(
     viewModel: MainViewModel
 ) {
 
+    val context = LocalContext.current
+
     val event = viewModel.events.collectAsState(initial = null)
 
     LaunchedEffect(key1 = event.value) {
@@ -157,43 +163,11 @@ private fun EventsHandler(
                 navController.popBackStack()
                 navController.navigate(Routes.RANKINGS_SCREEN)
             }
+            Events.MakeLocationErrorToast -> {
+                Toast.makeText(context, context.getText(R.string.error_location), Toast.LENGTH_SHORT).show()
+                viewModel.clearEventChannel()
+            }
             else -> {}
         }
     }
 }
-
-/*
-@ExperimentalAnimationApi
-@Composable
-fun MainActivityNavigation() {
-
-    val navController = rememberAnimatedNavController()
-
-    AnimatedNavHost(
-        navController = navController,
-        startDestination = Routes.HOME_SCREEN,
-        enterTransition = {
-            fadeIn(
-                initialAlpha = 0.1f,
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutLinearInEasing
-                )
-            )
-        },
-        exitTransition = {
-            fadeOut(
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutLinearInEasing
-                )
-            )
-        }
-    ) {
-        composable(
-            route = Routes.HOME_SCREEN
-        ) {
-            HomeScreen(navController)
-        }
-    }
-}*/

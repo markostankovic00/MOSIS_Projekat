@@ -146,6 +146,11 @@ dependencies {
     //TIMBER
     implementation Dependencies.timber
 
+    //GOOGLE MAPS
+    implementation Dependencies.google_maps
+    implementation Dependencies.google_maps_location
+    implementation Dependencies.google_maps_compose
+
     //LOCAL UNIT TESTS
     testImplementation Dependencies.test_core
     testImplementation Dependencies.test_junit

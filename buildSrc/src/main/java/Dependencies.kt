@@ -11,6 +11,9 @@ import Versions.dagger_hilt_version
 import Versions.datastore_version
 import Versions.firebase_version
 import Versions.glide_landscapist_version
+import Versions.google_maps_compose_version
+import Versions.google_maps_location_version
+import Versions.google_maps_version
 import Versions.gson_converter_version
 import Versions.gson_version
 import Versions.hilt_compiler_version
@@ -100,6 +103,11 @@ object Dependencies {
 
     //TIMBER
     const val timber = "com.jakewharton.timber:timber:$timber_version"
+
+    //GOOGLE MAPS
+    const val google_maps = "com.google.android.gms:play-services-maps:$google_maps_version"
+    const val google_maps_location = "com.google.android.gms:play-services-location:$google_maps_location_version"
+    const val google_maps_compose = "com.google.maps.android:maps-compose:$google_maps_compose_version"
 
     //TESTING
     const val test_core = "androidx.test:core:$test_core_version"
