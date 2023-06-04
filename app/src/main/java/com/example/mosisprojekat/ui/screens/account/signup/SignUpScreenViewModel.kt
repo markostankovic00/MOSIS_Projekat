@@ -52,8 +52,8 @@ class SignUpScreenViewModel @Inject constructor(
 
         try {
             authRepository.signUpUser(
-                email = emailTextState.value,
-                password = passwordTextState.value
+                email = emailTextState.value.trim(),
+                password = passwordTextState.value.trim()
             ) { isSuccessful ->
                 if (isSuccessful)
                     navigateToHomeScreen()

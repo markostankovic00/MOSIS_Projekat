@@ -34,8 +34,8 @@ class LogInScreenViewModel @Inject constructor(
         else {
             try {
                 authRepository.logInUser(
-                    email = emailTextState.value,
-                    password = passwordTextState.value
+                    email = emailTextState.value.trim(),
+                    password = passwordTextState.value.trim()
                 ) { isSuccessful ->
                     if (isSuccessful)
                         navigateToHomeScreen()
