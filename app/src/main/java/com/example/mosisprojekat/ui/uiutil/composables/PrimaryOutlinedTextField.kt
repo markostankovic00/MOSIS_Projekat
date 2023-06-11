@@ -21,18 +21,20 @@ fun PrimaryOutlinedTextField(
     textStateValue: String,
     onValueChange: (String) -> Unit,
     label: String,
-    isError: Boolean,
+    isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     imeAction: ImeAction = ImeAction.Next,
     onNext: () -> Unit = {},
     onDone: () -> Unit = {},
-    trailingIconVector: ImageVector = Icons.Filled.Cancel,
-    onTrailingIconClick: () -> Unit
+    trailingIconVector: ImageVector? = Icons.Filled.Cancel,
+    onTrailingIconClick: () -> Unit = {},
+    enabled: Boolean = true,
+    singleLine: Boolean = true
 ) {
     OutlinedTextField(
         modifier = modifier,
-            //.focusRequester(usernameFocusRequester),
-        singleLine = true,
+        enabled = enabled,
+        singleLine = singleLine,
         value = textStateValue,
         onValueChange = {  onValueChange(it) },
         label = {
@@ -47,6 +49,7 @@ fun PrimaryOutlinedTextField(
             unfocusedLabelColor = GreyLight,
             focusedLabelColor = GreyLight,
             cursorColor = MaterialTheme.colors.onBackground,
+            disabledLabelColor = GreyLight
         ),
         textStyle = MaterialTheme.typography.body1.copy(
             textAlign = TextAlign.Start,
@@ -61,14 +64,18 @@ fun PrimaryOutlinedTextField(
             onDone = { onDone() }
         ),
         trailingIcon = {
-            IconButton(
-                onClick = { onTrailingIconClick() }
-            ) {
-                Icon(
-                    imageVector = trailingIconVector,
-                    contentDescription = "Cancel username input",
-                    tint = GreyLight
-                )
+            if (trailingIconVector != null) {
+                IconButton(
+                    onClick = {
+                        onTrailingIconClick()
+                    }
+                ) {
+                    Icon(
+                        imageVector = trailingIconVector,
+                        contentDescription = "Cancel username input",
+                        tint = GreyLight
+                    )
+                }
             }
         }
     )

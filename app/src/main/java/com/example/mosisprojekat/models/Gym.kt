@@ -1,6 +1,7 @@
 package com.example.mosisprojekat.models
 
 data class Gym(
+    val userId: String = "",
     val name: String = "",
     val lat: Double = 0.0,
     val lng: Double = 0.0,

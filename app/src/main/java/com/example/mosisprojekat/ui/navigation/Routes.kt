@@ -13,4 +13,5 @@ object Routes {
     const val PROFILE_SCREEN = "profile_screen"
     const val RANKINGS_SCREEN = "rankings_screen"
     const val GYM_DETAILS_SCREEN = "gym_details_screen"
+    const val ADD_GYM_SCREEN = "add_gym_screen"
 }

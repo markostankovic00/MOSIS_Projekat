@@ -3,6 +3,7 @@ package com.example.mosisprojekat.ui.screens.main.home
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +15,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.mosisprojekat.R
 import com.example.mosisprojekat.ui.activities.MainViewModel
 import com.example.mosisprojekat.ui.navigation.Routes
 import com.example.mosisprojekat.util.ComponentSizes
@@ -60,7 +63,7 @@ private fun HomeScreenView(
 
     var completedInitialZoom by remember { mutableStateOf(false) }
 
-    val gyms by remember { viewModel.gyms }
+    val gyms by viewModel.listOfGyms.collectAsState()
 
     LaunchedEffect(key1 = lastKnownLocation) {
         lastKnownLocation?.let { location ->
@@ -86,8 +89,9 @@ private fun HomeScreenView(
                 Marker(
                     position = LatLng(gym.lat, gym.lng),
                     title = gym.name,
-                    snippet = "Long click to see details",
-                    onInfoWindowLongClick = { viewModel.onInfoWindowLongCLick(gym) },
+                    snippet = stringResource(id = R.string.home_screen_click_on_info_window_text),
+                    onInfoWindowClick = { viewModel.onInfoWindowCLick(gym) },
+                    onInfoWindowLongClick = { viewModel.onInfoWindowCLick(gym) },
                     onClick = {
                         it.showInfoWindow()
                         true
@@ -108,14 +112,33 @@ private fun EventsHandler(
     viewModel: HomeScreenViewModel
 ) {
 
+    val context = LocalContext.current
+
     val event = viewModel.events.collectAsState(initial = null)
 
     LaunchedEffect(key1 = event.value) {
         when (event.value) {
+
             is Events.NavigateToGymDetailsScreen -> {
                 val selectedGymId = (event.value as Events.NavigateToGymDetailsScreen).selectedGymId
                 navController.navigate(Routes.GYM_DETAILS_SCREEN + "/"+ selectedGymId)
             }
+
+            is Events.NavigateToAddGymScreen -> {
+                val lat = (event.value as Events.NavigateToAddGymScreen).lat.toString()
+                val lng = (event.value as Events.NavigateToAddGymScreen).lng.toString()
+                navController.navigate(Routes.ADD_GYM_SCREEN + "/" + lat + "/" + lng)
+            }
+
+            Events.MakeGenericErrorToast -> {
+                Toast.makeText(
+                    context,
+                    context.getText(R.string.error_generic),
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.clearEventChannel()
+            }
+
             else -> {}
         }
     }

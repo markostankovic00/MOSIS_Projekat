@@ -52,7 +52,6 @@ class UsersDataRepository: UsersDataRepositoryInteractor {
         try {
             snapshotStateListener = usersDataRef
                 .whereNotEqualTo("userId", "")
-                //.limit(1)
                 .addSnapshotListener { snapshot, e ->
                     val response = if (snapshot != null) {
                         val userData = snapshot.toObjects(UserData::class.java)
