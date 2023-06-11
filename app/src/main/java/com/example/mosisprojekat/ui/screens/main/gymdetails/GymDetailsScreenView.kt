@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.EditOff
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -184,15 +187,38 @@ private fun GymDetailsScreenView(
                     enabled = false
                 )
 
-                /*PrimaryOutlinedTextField(
-                    modifier = Modifier.padding(top = MaterialTheme.spacing.medium),
-                    singleLine = false,
-                    textStateValue = gym?.comment ?: "",
-                    onValueChange = { },
-                    label = stringResource(id = R.string.gym_details_screen_comment_label),
-                    trailingIconVector = null,
-                    enabled = false
-                )*/
+                Row(
+                    modifier = Modifier.padding(top = MaterialTheme.spacing.large),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.gym_details_screen_total_rating_label),
+                        style = MaterialTheme.typography.h2
+                    )
+
+                    var totalRating = 0.0
+                    if(gym?.reviews?.isNotEmpty() == true) {
+                        gym?.reviews?.forEach { review ->
+                            totalRating += review.mark
+                        }
+                        totalRating/= gym?.reviews?.size ?: 1
+                    }
+
+                    Text(
+                        modifier = Modifier.padding(
+                            start = MaterialTheme.spacing.small,
+                            end = MaterialTheme.spacing.medium
+                        ),
+                        text = String.format("%.2f", totalRating),
+                        style = MaterialTheme.typography.h2
+                    )
+                    Icon(
+                        modifier = Modifier.scale(2f),
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = "",
+                        tint = Color.Yellow
+                    )
+
+                }
 
                 PrimaryButton(
                     modifier = Modifier
@@ -205,6 +231,15 @@ private fun GymDetailsScreenView(
                     else
                         stringResource(id = R.string.gym_details_screen_ok_button_text),
                     onClick = { viewModel.onEditGymButtonClicked(selectedGymId) }
+                )
+
+                PrimaryButton(
+                    modifier = Modifier
+                        .padding(top = MaterialTheme.spacing.large)
+                        .height(57.dp)
+                        .width(150.dp),
+                    text = stringResource(id = R.string.gym_details_screen_see_reviews_button_text),
+                    onClick = { viewModel.onSeeReviewsButtonClicked(selectedGymId) }
                 )
 
                 PrimaryButton(
@@ -248,9 +283,14 @@ private fun EventsHandler(
                 viewModel.clearEventChannel()
             }
 
-            is Events.NavigateToAddRatingScreen -> {
-                val selectedGymId = (event.value as Events.NavigateToAddRatingScreen).selectedGymId
+            is Events.NavigateToAddReviewScreen -> {
+                val selectedGymId = (event.value as Events.NavigateToAddReviewScreen).selectedGymId
                 navController.navigate(Routes.ADD_REVIEW_SCREEN + "/"+ selectedGymId)
+            }
+
+            is Events.NavigateToSeeReviewsScreen -> {
+                val selectedGymId = (event.value as Events.NavigateToSeeReviewsScreen).selectedGymId
+                navController.navigate(Routes.SEE_REVIEWS_SCREEN + "/"+ selectedGymId)
             }
 
             else -> {}

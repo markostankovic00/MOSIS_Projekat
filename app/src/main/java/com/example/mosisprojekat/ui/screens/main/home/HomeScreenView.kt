@@ -5,10 +5,12 @@ import android.location.Location
 import android.location.LocationManager
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -36,6 +39,7 @@ import com.example.mosisprojekat.ui.activities.MainViewModel
 import com.example.mosisprojekat.ui.navigation.Routes
 import com.example.mosisprojekat.util.ComponentSizes
 import com.example.mosisprojekat.ui.screens.main.home.HomeScreenViewModel.Events
+import com.example.mosisprojekat.ui.theme.BackgroundPatternColor
 import com.example.mosisprojekat.ui.theme.GreenValid
 import com.example.mosisprojekat.ui.theme.RedError
 import com.example.mosisprojekat.ui.theme.spacing
@@ -99,13 +103,15 @@ private fun HomeScreenView(
         viewModel.updateLocation(lastKnownLocation)
 
         lastKnownLocation?.let { location ->
-            if(!completedInitialZoom) {
+            if (!completedInitialZoom) {
                 cameraPositionState.centerOnLocation(location)
-                if(cameraPositionState.position.zoom == 15f)
+                if (cameraPositionState.position.zoom == 15f)
                     completedInitialZoom = true
             }
         }
     }
+
+
 
     Column(
         modifier = Modifier
@@ -114,54 +120,69 @@ private fun HomeScreenView(
             .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
     ) {
 
-        SearchBar(
+
+        Column(
             modifier = Modifier
-                .padding(
-                    top = MaterialTheme.spacing.large,
-                    start = MaterialTheme.spacing.large
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        listOf(
+                            BackgroundPatternColor,
+                            MaterialTheme.colors.background
+                        )
+                    ),
+                    shape = MaterialTheme.shapes.small
                 )
-                .width(280.dp)
-                .height(60.dp),
-            searchText = searchText,
-            onSearchTextChange = viewModel::onSearchTextChanged,
-            placeholderText = stringResource(id = R.string.search_bar_by_name)
-        )
-
-        PrimaryOutlinedTextField(
-            modifier = Modifier
-                .padding(
-                    top = MaterialTheme.spacing.medium,
-                    start = MaterialTheme.spacing.large,
-                ),
-            textStateValue = radiusFilter,
-            onValueChange = viewModel::onRadiusFilterChanged,
-            label = stringResource(id = R.string.home_screen_radius_label),
-            onTrailingIconClick = { viewModel.onRadiusFilterChanged("") },
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Done,
-            onDone = { focusManager.clearFocus() }
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(start = MaterialTheme.spacing.large + MaterialTheme.spacing.extraSmall),
-            text = isErrorMessagePairRadiusFilter.second,
-            color = if (isErrorMessagePairRadiusFilter.first) RedError else GreenValid
-        )
-
-        Row(
-            modifier = Modifier
-                .padding(
-                    top = MaterialTheme.spacing.extraSmall,
-                    start = MaterialTheme.spacing.large,
-                ),
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
-                checked = showOnlyMineFilter,
-                onCheckedChange = { viewModel.onShowOnlyMineFilterCheckedChange(it) }
+            SearchBar(
+                modifier = Modifier
+                    .padding(
+                        top = MaterialTheme.spacing.large,
+                        start = MaterialTheme.spacing.large
+                    )
+                    .width(280.dp)
+                    .height(60.dp),
+                searchText = searchText,
+                onSearchTextChange = viewModel::onSearchTextChanged,
+                placeholderText = stringResource(id = R.string.search_bar_by_name)
             )
-            Text(text = "Show only mine")
+
+            PrimaryOutlinedTextField(
+                modifier = Modifier
+                    .padding(
+                        top = MaterialTheme.spacing.medium,
+                        start = MaterialTheme.spacing.large,
+                    ),
+                textStateValue = radiusFilter,
+                onValueChange = viewModel::onRadiusFilterChanged,
+                label = stringResource(id = R.string.home_screen_radius_label),
+                onTrailingIconClick = { viewModel.onRadiusFilterChanged("") },
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done,
+                onDone = { focusManager.clearFocus() }
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(start = MaterialTheme.spacing.large + MaterialTheme.spacing.extraSmall),
+                text = isErrorMessagePairRadiusFilter.second,
+                color = if (isErrorMessagePairRadiusFilter.first) RedError else GreenValid
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(
+                        top = MaterialTheme.spacing.extraSmall,
+                        start = MaterialTheme.spacing.large,
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = showOnlyMineFilter,
+                    onCheckedChange = { viewModel.onShowOnlyMineFilterCheckedChange(it) }
+                )
+                Text(text = "Show only mine")
+            }
         }
 
 
@@ -210,7 +231,7 @@ private fun EventsHandler(
 
             is Events.NavigateToGymDetailsScreen -> {
                 val selectedGymId = (event.value as Events.NavigateToGymDetailsScreen).selectedGymId
-                navController.navigate(Routes.GYM_DETAILS_SCREEN + "/"+ selectedGymId)
+                navController.navigate(Routes.GYM_DETAILS_SCREEN + "/" + selectedGymId)
             }
 
             is Events.NavigateToAddGymScreen -> {

@@ -53,14 +53,18 @@
     <string name="add_review_screen_comment_label">Comment</string>
     <string name="add_review_screen_save_review_button">Save Review</string>
 
+    //SEE REVIEWS SCREEN
+    <string name="see_reviews_screen_title">Reviews</string>
+
     //GYM DETAILS SCREEN
     <string name="gym_details_screen_title">Gym Info</string>
     <string name="gym_details_screen_name_label">Name</string>
     <string name="gym_details_screen_latitude_label">Latitude</string>
     <string name="gym_details_screen_longitude_label">Longitude</string>
-    <string name="gym_details_screen_comment_label">Comment</string>
+    <string name="gym_details_screen_total_rating_label">Total rating:</string>
     <string name="gym_details_screen_save_button_text">Save</string>
     <string name="gym_details_screen_ok_button_text">OK</string>
+    <string name="gym_details_screen_see_reviews_button_text">See Reviews</string>
     <string name="gym_details_screen_add_review_button_text">Add Review</string>
 
     //BOTTOM NAV BAR
@@ -81,5 +85,6 @@
 
     //ADDITIONAL STRINGS
     <string name="search_bar_by_name">Search by gym name</string>
+    <string name="successful_deletion_toast">Deleted successfully!</string>
 
 </resources>

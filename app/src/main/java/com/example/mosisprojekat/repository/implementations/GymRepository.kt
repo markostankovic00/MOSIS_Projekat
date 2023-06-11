@@ -120,6 +120,19 @@ class GymRepository: GymRepositoryInteractor {
 
     }
 
+    override fun removeGymReview(
+        gymId: String,
+        review: Review,
+        onComplete: (Boolean) -> Unit
+    ) {
+        gymsRef
+            .document(gymId)
+            .update("reviews", FieldValue.arrayRemove(review))
+            .addOnCompleteListener { result ->
+                onComplete.invoke(result.isSuccessful)
+            }
+    }
+
     override fun updateGymName(gymId: String, name: String, onComplete: (Boolean) -> Unit) {
         gymsRef
             .document(gymId)

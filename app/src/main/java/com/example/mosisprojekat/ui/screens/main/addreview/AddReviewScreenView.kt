@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.mosisprojekat.R
-import com.example.mosisprojekat.ui.navigation.Routes
 import com.example.mosisprojekat.ui.screens.main.addreview.AddReviewScreenViewModel.Events
 import com.example.mosisprojekat.ui.theme.GreenValid
 import com.example.mosisprojekat.ui.theme.RedError
@@ -165,9 +164,8 @@ private fun EventsHandler(
     LaunchedEffect(key1 = event.value) {
         when (event.value) {
 
-            is Events.NavigateToGymDetailsScreen -> {
-                val selectedGymId = (event.value as Events.NavigateToGymDetailsScreen).selectedGymId
-                navController.navigate(Routes.GYM_DETAILS_SCREEN + "/"+ selectedGymId)
+            Events.NavigateToGymDetailsScreen -> {
+                navController.popBackStack()
             }
 
             Events.MakeGenericErrorToast -> {

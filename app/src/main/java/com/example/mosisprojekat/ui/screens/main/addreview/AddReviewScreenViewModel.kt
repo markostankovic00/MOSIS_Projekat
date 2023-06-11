@@ -36,7 +36,7 @@ class AddReviewScreenViewModel @Inject constructor(
                 mark = markState.value
             ) { isSuccessful ->
                 if (isSuccessful) {
-                    navigateToGymDetailsScreen(selectedGymId)
+                    navigateToGymDetailsScreen()
                 }
                 else {
                     makeGenericErrorToast()
@@ -48,8 +48,8 @@ class AddReviewScreenViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToGymDetailsScreen(selectedGymId: String) = viewModelScope.launch {
-        events.emit(Events.NavigateToGymDetailsScreen(selectedGymId))
+    private fun navigateToGymDetailsScreen() = viewModelScope.launch {
+        events.emit(Events.NavigateToGymDetailsScreen)
     }
 
     private fun makeGenericErrorToast() = viewModelScope.launch {
@@ -61,7 +61,7 @@ class AddReviewScreenViewModel @Inject constructor(
     }
 
     sealed class Events {
-        data class NavigateToGymDetailsScreen(val selectedGymId: String): Events()
+        object NavigateToGymDetailsScreen: Events()
         object MakeGenericErrorToast: Events()
     }
 }

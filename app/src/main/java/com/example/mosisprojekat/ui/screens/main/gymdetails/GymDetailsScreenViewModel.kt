@@ -103,8 +103,12 @@ class GymDetailsScreenViewModel @Inject constructor(
         }
     }
 
+    fun onSeeReviewsButtonClicked(gymId: String) = viewModelScope.launch {
+        events.emit(Events.NavigateToSeeReviewsScreen(gymId))
+    }
+
     fun onAddReviewButtonClicked(gymId: String) = viewModelScope.launch {
-        events.emit(Events.NavigateToAddRatingScreen(gymId))
+        events.emit(Events.NavigateToAddReviewScreen(gymId))
     }
 
     private fun navigateToHomeScreen() = viewModelScope.launch {
@@ -122,6 +126,7 @@ class GymDetailsScreenViewModel @Inject constructor(
     sealed class Events {
         object NavigateToHomeScreen: Events()
         object MakeGenericErrorToast: Events()
-        data class NavigateToAddRatingScreen(val selectedGymId: String): Events()
+        data class NavigateToAddReviewScreen(val selectedGymId: String): Events()
+        data class NavigateToSeeReviewsScreen(val selectedGymId: String): Events()
     }
 }

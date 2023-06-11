@@ -1,6 +1,7 @@
 package com.example.mosisprojekat.repository.interactors
 
 import com.example.mosisprojekat.models.Gym
+import com.example.mosisprojekat.models.Review
 import com.example.mosisprojekat.util.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -31,6 +32,12 @@ interface GymRepositoryInteractor {
         gymId: String,
         comment: String,
         mark: Int,
+        onComplete: (Boolean) -> Unit
+    )
+
+    fun removeGymReview(
+        gymId: String,
+        review: Review,
         onComplete: (Boolean) -> Unit
     )
 
