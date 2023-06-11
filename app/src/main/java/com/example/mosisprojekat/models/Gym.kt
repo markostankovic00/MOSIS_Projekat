@@ -8,4 +8,8 @@ data class Gym(
     val comment: String = "",
     val rating: Double = 0.0,
     val documentId: String = ""
-)
+) {
+    fun doesMatchSearchQuery(query: String): Boolean {
+        return name.contains(query, ignoreCase = true)
+    }
+}

@@ -33,7 +33,9 @@ import com.example.mosisprojekat.ui.uiutil.composables.bottomnav.BottomNavBar
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalAnimationApi
 @Composable
 fun MainActivityLayoutAndNavigation(
@@ -46,6 +48,7 @@ fun MainActivityLayoutAndNavigation(
     EventsHandler(navController, viewModel)
 }
 
+@FlowPreview
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalAnimationApi
 @Composable
@@ -95,6 +98,7 @@ private fun NavHostAndBottomNavigation(
 
 }
 
+@FlowPreview
 @ExperimentalAnimationApi
 @Composable
 private fun AnimatedNavigation(

@@ -39,3 +39,22 @@ fun validateRepeatPasswordTextField(
         Pair(false, "")
     }
 }
+
+fun validateRadius(radiusTextState: String): Pair<Boolean, String> {
+
+    val intOrNull = radiusTextState.toIntOrNull()
+
+    if(radiusTextState.isEmpty()) return Pair(false, "")
+
+    return when {
+        intOrNull == null -> {
+            Pair(true, "Must be a number")
+        }
+        intOrNull < 0 -> {
+            Pair(true, "Can't be lower than zero")
+        }
+        else -> {
+            Pair(false, "")
+        }
+    }
+}

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +30,8 @@ fun PrimaryOutlinedTextField(
     trailingIconVector: ImageVector? = Icons.Filled.Cancel,
     onTrailingIconClick: () -> Unit = {},
     enabled: Boolean = true,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -57,7 +59,8 @@ fun PrimaryOutlinedTextField(
         isError = isError,
         visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(
-            imeAction = imeAction
+            imeAction = imeAction,
+            keyboardType = keyboardType
         ),
         keyboardActions = KeyboardActions(
             onNext = { onNext() },

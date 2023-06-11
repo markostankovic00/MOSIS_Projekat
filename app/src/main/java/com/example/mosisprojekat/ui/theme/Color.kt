@@ -16,6 +16,7 @@ val BackgroundPatternColor = Color(0xBBBA68C8)
 val RankingRowHighlightColor = Color(0x55BA68C8)
 val PrimaryButtonBackgroundColor = Color(0xFFFFFFFF)
 val GreyLight = Color(0xFFBDBDBD)
+val SearchBarPlaceholderTextColor = Color(0x66FFFFFF)
 
 val RedError = Color(0xFFEF5350)
 val GreenValid = Color(0xFF1B9B1B)

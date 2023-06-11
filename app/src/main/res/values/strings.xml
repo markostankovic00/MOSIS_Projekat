@@ -27,6 +27,8 @@
 
     //HOME SCREEN
     <string name="home_screen_click_on_info_window_text">Click to see gym info</string>
+    <string name="home_screen_radius_label">Radius in meters</string>
+    <string name="home_screen_set_filter_button">Set filter</string>
 
     //RANKINGS SCREEN
     <string name="rankings_screen_title">Rankings</string>
@@ -70,5 +72,8 @@
     <string name="error_invalid_logout">Error logging out! Please try again later</string>
     <string name="error_location">An error with location occurred!</string>
     <string name="error_generic">Something went wrong! Please try again later</string>
+
+    //ADDITIONAL STRINGS
+    <string name="search_bar_by_name">Search by gym name</string>
 
 </resources>

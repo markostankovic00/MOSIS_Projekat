@@ -27,11 +27,13 @@ import com.example.mosisprojekat.ui.theme.MosisProjekatTheme
 import com.example.mosisprojekat.util.location.DefaultLocationClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
+@FlowPreview
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -69,8 +71,6 @@ class MainActivity : ComponentActivity() {
 
             askPermissions()
 
-            //initializeLocationClient(viewModel)
-
             MosisProjekatTheme {
 
                 val context = LocalContext.current
@@ -106,7 +106,7 @@ class MainActivity : ComponentActivity() {
         )
 
         locationClient
-            .getLocationUpdates(10000L)
+            .getLocationUpdates(5000L)
             .catch {e ->
                 viewModel.makeLocationErrorToast()
                 e.printStackTrace()
