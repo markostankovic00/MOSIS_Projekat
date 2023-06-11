@@ -1,13 +1,12 @@
 package com.example.mosisprojekat.ui.activities
 
-import android.annotation.SuppressLint
+
 import android.location.Location
+import android.location.LocationManager
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mosisprojekat.ui.navigation.Routes
-import com.example.mosisprojekat.ui.screens.main.profile.ProfileScreenViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -22,6 +21,16 @@ class MainViewModel @Inject constructor(): ViewModel() {
     val bottomNavBarVisibilityState = (mutableStateOf(false))
 
     val lastKnownLocation = mutableStateOf<Location?>(null)
+
+    val gpsEnabled = mutableStateOf(false)
+
+    fun checkIfGPSEnabled(locationManager: LocationManager) {
+        try {
+            gpsEnabled.value = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (e: Exception) {
+            Timber.i("Logging: GPS error")
+        }
+    }
 
     fun updateLocation(location: Location) = viewModelScope.launch {
         lastKnownLocation.value = location

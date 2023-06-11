@@ -16,14 +16,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import com.example.mosisprojekat.ui.activities.MainViewModel
 import com.example.mosisprojekat.ui.screens.main.home.HomeScreen
 import com.example.mosisprojekat.ui.activities.MainViewModel.Events
 import com.example.mosisprojekat.ui.uiutil.composables.bottomnav.BottomNavItem
 import com.example.mosisprojekat.R
+import com.example.mosisprojekat.ui.screens.main.gymdetails.GymDetailsScreen
 import com.example.mosisprojekat.ui.screens.main.profile.ProfileScreen
 import com.example.mosisprojekat.ui.screens.main.rankings.RankingsScreen
 import com.example.mosisprojekat.ui.uiutil.composables.bottomnav.BottomNavBar
@@ -135,6 +137,21 @@ private fun AnimatedNavigation(
             route = Routes.RANKINGS_SCREEN
         ) {
             RankingsScreen(navController)
+        }
+
+        composable(
+            route = Routes.GYM_DETAILS_SCREEN  + "/{selectedGymId}",
+            arguments = listOf(
+                navArgument("selectedGymId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            GymDetailsScreen(
+                navController,
+                it.arguments?.getString("selectedGymId") ?: ""
+            )
         }
     }
 }

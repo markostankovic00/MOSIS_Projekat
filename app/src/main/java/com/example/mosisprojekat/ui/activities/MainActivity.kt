@@ -2,7 +2,9 @@ package com.example.mosisprojekat.ui.activities
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,14 +14,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import com.example.mosisprojekat.ui.navigation.MainActivityLayoutAndNavigation
 import com.example.mosisprojekat.ui.theme.MosisProjekatTheme
 import com.example.mosisprojekat.util.location.DefaultLocationClient
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.catch
@@ -52,9 +57,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    //private val viewModel: MainViewModel by viewModels()
-
     @SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,26 +67,25 @@ class MainActivity : ComponentActivity() {
 
             val viewModel = hiltViewModel<MainViewModel>()
 
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
             askPermissions()
 
-            val locationClient = DefaultLocationClient(
-                applicationContext,
-                LocationServices.getFusedLocationProviderClient(applicationContext)
-            )
-
-            locationClient
-                .getLocationUpdates(10000L)
-                .catch {e ->
-                    viewModel.makeLocationErrorToast()
-                    e.printStackTrace()
-                }
-                .onEach { location ->
-                    viewModel.updateLocation(location)
-                }
-                .launchIn(lifecycleScope)
+            //initializeLocationClient(viewModel)
 
             MosisProjekatTheme {
+
+                val context = LocalContext.current
+
+                val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+                val gpsEnabled by remember { viewModel.gpsEnabled }
+
+                viewModel.checkIfGPSEnabled(locationManager)
+
+                LaunchedEffect(key1 = gpsEnabled) {
+                    if(gpsEnabled)
+                        initializeLocationClient(viewModel)
+                }
+
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
@@ -94,6 +95,27 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun initializeLocationClient(
+        viewModel: MainViewModel
+    ) {
+        val locationClient = DefaultLocationClient(
+            applicationContext,
+            LocationServices.getFusedLocationProviderClient(applicationContext)
+        )
+
+        locationClient
+            .getLocationUpdates(10000L)
+            .catch {e ->
+                viewModel.makeLocationErrorToast()
+                e.printStackTrace()
+            }
+            .onEach { location ->
+                Timber.i("TAGA: lat: ${location.latitude}, long: ${location.longitude}")
+                viewModel.updateLocation(location)
+            }
+            .launchIn(lifecycleScope)
     }
 
     private fun handleNavigationBugOnXiaomiDevices() {
