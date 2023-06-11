@@ -184,7 +184,7 @@ private fun GymDetailsScreenView(
                     enabled = false
                 )
 
-                PrimaryOutlinedTextField(
+                /*PrimaryOutlinedTextField(
                     modifier = Modifier.padding(top = MaterialTheme.spacing.medium),
                     singleLine = false,
                     textStateValue = gym?.comment ?: "",
@@ -192,7 +192,7 @@ private fun GymDetailsScreenView(
                     label = stringResource(id = R.string.gym_details_screen_comment_label),
                     trailingIconVector = null,
                     enabled = false
-                )
+                )*/
 
                 PrimaryButton(
                     modifier = Modifier
@@ -205,6 +205,15 @@ private fun GymDetailsScreenView(
                     else
                         stringResource(id = R.string.gym_details_screen_ok_button_text),
                     onClick = { viewModel.onEditGymButtonClicked(selectedGymId) }
+                )
+
+                PrimaryButton(
+                    modifier = Modifier
+                        .padding(top = MaterialTheme.spacing.large)
+                        .height(57.dp)
+                        .width(150.dp),
+                    text = stringResource(id = R.string.gym_details_screen_add_review_button_text),
+                    onClick = { viewModel.onAddReviewButtonClicked(selectedGymId) }
                 )
             }
 
@@ -237,6 +246,11 @@ private fun EventsHandler(
                     Toast.LENGTH_SHORT
                 ).show()
                 viewModel.clearEventChannel()
+            }
+
+            is Events.NavigateToAddRatingScreen -> {
+                val selectedGymId = (event.value as Events.NavigateToAddRatingScreen).selectedGymId
+                navController.navigate(Routes.ADD_REVIEW_SCREEN + "/"+ selectedGymId)
             }
 
             else -> {}

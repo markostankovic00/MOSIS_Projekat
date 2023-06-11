@@ -19,8 +19,6 @@ interface GymRepositoryInteractor {
         name: String,
         lat: Double,
         lng: Double,
-        comment: String,
-        rating: Double,
         onComplete: (Boolean) -> Unit
     )
 
@@ -29,11 +27,10 @@ interface GymRepositoryInteractor {
         onComplete: (Boolean) -> Unit
     )
 
-    fun updateGym(
+    fun addGymReview(
         gymId: String,
-        name: String,
         comment: String,
-        rating: Double,
+        mark: Int,
         onComplete: (Boolean) -> Unit
     )
 

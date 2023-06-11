@@ -5,7 +5,7 @@ data class Gym(
     val name: String = "",
     val lat: Double = 0.0,
     val lng: Double = 0.0,
-    val comment: String = "",
+    val reviews: List<Review> = emptyList(),
     val rating: Double = 0.0,
     val documentId: String = ""
 ) {

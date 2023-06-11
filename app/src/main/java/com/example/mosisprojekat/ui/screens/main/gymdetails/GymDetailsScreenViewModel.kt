@@ -29,7 +29,7 @@ class GymDetailsScreenViewModel @Inject constructor(
 
     val nameTextState = mutableStateOf(gym.value?.name ?: "")
 
-    val rating = mutableStateOf(5.0)
+    //val rating = mutableStateOf(5.0)
 
     fun onNameTextChanged(name: String) {
         nameTextState.value = name
@@ -103,6 +103,10 @@ class GymDetailsScreenViewModel @Inject constructor(
         }
     }
 
+    fun onAddReviewButtonClicked(gymId: String) = viewModelScope.launch {
+        events.emit(Events.NavigateToAddRatingScreen(gymId))
+    }
+
     private fun navigateToHomeScreen() = viewModelScope.launch {
         events.emit(Events.NavigateToHomeScreen)
     }
@@ -118,5 +122,6 @@ class GymDetailsScreenViewModel @Inject constructor(
     sealed class Events {
         object NavigateToHomeScreen: Events()
         object MakeGenericErrorToast: Events()
+        data class NavigateToAddRatingScreen(val selectedGymId: String): Events()
     }
 }

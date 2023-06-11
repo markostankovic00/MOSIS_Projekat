@@ -1,9 +1,12 @@
 package com.example.mosisprojekat.repository.implementations
 
 import com.example.mosisprojekat.models.Gym
+import com.example.mosisprojekat.models.Review
 import com.example.mosisprojekat.repository.interactors.GymRepositoryInteractor
 import com.example.mosisprojekat.util.Resource
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,6 +20,7 @@ class GymRepository: GymRepositoryInteractor {
 
     private val gymsRef: CollectionReference =
         Firebase.firestore.collection(GYMS_COLLECTION_REF)
+    private fun getUserId(): String = Firebase.auth.currentUser?.uid ?: ""
 
     override fun getAllGyms(): Flow<Resource<List<Gym>>> = callbackFlow {
 
@@ -65,8 +69,6 @@ class GymRepository: GymRepositoryInteractor {
         name: String,
         lat: Double,
         lng: Double,
-        comment: String,
-        rating: Double,
         onComplete: (Boolean) -> Unit
     ) {
         val documentId = gymsRef.document().id
@@ -76,8 +78,6 @@ class GymRepository: GymRepositoryInteractor {
             name = name,
             lat = lat,
             lng = lng,
-            comment = comment,
-            rating = rating,
             documentId = documentId
         )
 
@@ -98,25 +98,26 @@ class GymRepository: GymRepositoryInteractor {
             }
     }
 
-    override fun updateGym(
+    override fun addGymReview(
         gymId: String,
-        name: String,
         comment: String,
-        rating: Double,
+        mark: Int,
         onComplete: (Boolean) -> Unit
     ) {
-        val updateData = hashMapOf<String, Any>(
-            "name" to name,
-            "comment" to comment,
-            "rating" to rating
+
+        val newReview = Review(
+            userId = getUserId(),
+            comment = comment,
+            mark = mark
         )
 
         gymsRef
             .document(gymId)
-            .update(updateData)
-            .addOnCompleteListener {
-                onComplete(it.isSuccessful)
+            .update("reviews", FieldValue.arrayUnion(newReview))
+            .addOnCompleteListener { result ->
+                onComplete.invoke(result.isSuccessful)
             }
+
     }
 
     override fun updateGymName(gymId: String, name: String, onComplete: (Boolean) -> Unit) {

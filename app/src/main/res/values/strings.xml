@@ -48,6 +48,11 @@
     <string name="add_gym_screen_comment_label">Comment</string>
     <string name="add_gym_screen_add_gym_button">Add Gym</string>
 
+    //ADD REVIEW SCREEN
+    <string name="add_review_screen_title">Add Review</string>
+    <string name="add_review_screen_comment_label">Comment</string>
+    <string name="add_review_screen_save_review_button">Save Review</string>
+
     //GYM DETAILS SCREEN
     <string name="gym_details_screen_title">Gym Info</string>
     <string name="gym_details_screen_name_label">Name</string>
@@ -56,6 +61,7 @@
     <string name="gym_details_screen_comment_label">Comment</string>
     <string name="gym_details_screen_save_button_text">Save</string>
     <string name="gym_details_screen_ok_button_text">OK</string>
+    <string name="gym_details_screen_add_review_button_text">Add Review</string>
 
     //BOTTOM NAV BAR
     <string name="bottom_nav_bar_rankings">Rankings</string>

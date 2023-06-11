@@ -26,6 +26,7 @@ import com.example.mosisprojekat.ui.activities.MainViewModel.Events
 import com.example.mosisprojekat.ui.uiutil.composables.bottomnav.BottomNavItem
 import com.example.mosisprojekat.R
 import com.example.mosisprojekat.ui.screens.main.addgym.AddGymScreen
+import com.example.mosisprojekat.ui.screens.main.addreview.AddReviewScreen
 import com.example.mosisprojekat.ui.screens.main.gymdetails.GymDetailsScreen
 import com.example.mosisprojekat.ui.screens.main.profile.ProfileScreen
 import com.example.mosisprojekat.ui.screens.main.rankings.RankingsScreen
@@ -176,6 +177,21 @@ private fun AnimatedNavigation(
                 navController = navController,
                 lat = (it.arguments?.getString("lat") ?: "").toDouble(),
                 lng = (it.arguments?.getString("lng") ?: "").toDouble()
+            )
+        }
+
+        composable(
+            route = Routes.ADD_REVIEW_SCREEN  + "/{selectedGymId}",
+            arguments = listOf(
+                navArgument("selectedGymId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            AddReviewScreen(
+                navController,
+                it.arguments?.getString("selectedGymId") ?: ""
             )
         }
     }

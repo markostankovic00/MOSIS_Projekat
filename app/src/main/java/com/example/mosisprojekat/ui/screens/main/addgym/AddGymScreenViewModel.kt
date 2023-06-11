@@ -20,16 +20,8 @@ class AddGymScreenViewModel @Inject constructor(
 
     val nameTextState = mutableStateOf("")
 
-    val commentTextState = mutableStateOf("")
-
-    val rating = mutableStateOf(5.0)
-
     fun onNameTextChanged(name: String) {
         nameTextState.value = name
-    }
-
-    fun onCommentTextChanged(comment: String) {
-        commentTextState.value = comment
     }
 
     fun addGym(
@@ -42,9 +34,7 @@ class AddGymScreenViewModel @Inject constructor(
                 userId = authRepository.getUserId(),
                 name = nameTextState.value,
                 lat = lat,
-                lng = lng,
-                comment = commentTextState.value,
-                rating = rating.value
+                lng = lng
             ) { isSuccessful ->
                 if (isSuccessful)
                     navigateToHomeScreen()

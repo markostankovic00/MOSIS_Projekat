@@ -27,7 +27,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -69,11 +68,6 @@ private fun AddGymScreenView(
     val nameTextState by rememberSaveable { viewModel.nameTextState}
     val isErrorMessagePairName = validateNotEmpty(nameTextState, context)
 
-    val commentFocusRequester = remember { FocusRequester() }
-    val commentTextState by rememberSaveable { viewModel.commentTextState}
-
-    val rating by rememberSaveable{ viewModel.rating }
-
     val addGymButtonEnabled = !isErrorMessagePairName.first
 
     val scrollState = rememberScrollState()
@@ -107,10 +101,7 @@ private fun AddGymScreenView(
                 onValueChange = { viewModel.onNameTextChanged(it) },
                 label = stringResource(id = R.string.add_gym_screen_name_label),
                 onTrailingIconClick = { viewModel.onNameTextChanged("") },
-                onNext = {
-                    focusManager.clearFocus()
-                    commentFocusRequester.requestFocus()
-                }
+                onNext = { focusManager.clearFocus() }
             )
 
             Text(
@@ -137,21 +128,6 @@ private fun AddGymScreenView(
             label = stringResource(id = R.string.add_gym_screen_longitude_label),
             trailingIconVector = null,
             enabled = false
-        )
-
-        PrimaryOutlinedTextField(
-            modifier = Modifier
-                .focusRequester(commentFocusRequester)
-                .padding(top = MaterialTheme.spacing.medium),
-            singleLine = false,
-            textStateValue = commentTextState,
-            onValueChange = { viewModel.onCommentTextChanged(it) },
-            label = stringResource(id = R.string.add_gym_screen_comment_label),
-            onTrailingIconClick = { viewModel.onCommentTextChanged("") },
-            imeAction = ImeAction.Done,
-            onDone = {
-                focusManager.clearFocus()
-            }
         )
 
         PrimaryButton(
