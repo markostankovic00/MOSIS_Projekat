@@ -58,7 +58,6 @@ class SignUpScreenViewModel @Inject constructor(
                 password = passwordTextState.value.trim()
             ) { isSuccessful ->
                 if (isSuccessful)
-                    //navigateToHomeScreen()
 
                     usersDataRepository.addUserData(
                         userId = authRepository.getUserId(),

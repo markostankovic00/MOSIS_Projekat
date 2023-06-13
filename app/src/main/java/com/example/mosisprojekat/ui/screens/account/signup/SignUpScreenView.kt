@@ -74,7 +74,7 @@ private fun SignUpScreenView(
 
     val emailFocusRequester = remember { FocusRequester() }
     val emailTextState by rememberSaveable { viewModel.emailTextState}
-    val isErrorMessagePairEmail = validateSignUpEmailTextField(emailTextState, context)
+    val isErrorMessagePairEmail = validateSignUpEmailTextField(emailTextState.trim(), context)
 
     val passwordFocusRequester = remember { FocusRequester() }
     var passwordVisibility by remember { mutableStateOf(false) }

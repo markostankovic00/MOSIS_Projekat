@@ -36,7 +36,9 @@
         <activity
             android:name="com.example.mosisprojekat.ui.activities.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MosisProjekat" >
+            android:theme="@style/Theme.MosisProjekat"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyC0Ko0q_5W8qCcbuug5OqWZS9wFKTxFEyA"/>
