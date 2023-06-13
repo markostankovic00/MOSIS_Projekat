@@ -3,7 +3,9 @@ package com.example.mosisprojekat.ui.screens.main.addreview
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mosisprojekat.repository.interactors.AuthRepositoryInteractor
 import com.example.mosisprojekat.repository.interactors.GymRepositoryInteractor
+import com.example.mosisprojekat.repository.interactors.UsersDataRepositoryInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -11,6 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddReviewScreenViewModel @Inject constructor(
+    private val authRepository: AuthRepositoryInteractor,
+    private val userDataRepository: UsersDataRepositoryInteractor,
     private val gymRepository: GymRepositoryInteractor
 ): ViewModel() {
 
@@ -36,12 +40,30 @@ class AddReviewScreenViewModel @Inject constructor(
                 mark = markState.value
             ) { isSuccessful ->
                 if (isSuccessful) {
-                    navigateToGymDetailsScreen()
+                    addUserPoints()
                 }
                 else {
                     makeGenericErrorToast()
                 }
             }
+        } catch (e: Exception) {
+            makeGenericErrorToast()
+            e.printStackTrace()
+        }
+    }
+
+    private fun addUserPoints() = viewModelScope.launch {
+        try {
+
+            val currentUserId = authRepository.getUserId()
+
+            userDataRepository.updateUserPoints(currentUserId, 100) { isSuccessful ->
+                if (isSuccessful)
+                    navigateToGymDetailsScreen()
+                else
+                    makeGenericErrorToast()
+            }
+
         } catch (e: Exception) {
             makeGenericErrorToast()
             e.printStackTrace()

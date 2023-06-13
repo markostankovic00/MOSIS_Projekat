@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mosisprojekat.models.Gym
 import com.example.mosisprojekat.repository.interactors.AuthRepositoryInteractor
 import com.example.mosisprojekat.repository.interactors.GymRepositoryInteractor
+import com.example.mosisprojekat.repository.interactors.UsersDataRepositoryInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GymDetailsScreenViewModel @Inject constructor(
     private val authRepository: AuthRepositoryInteractor,
+    private val userDataRepository: UsersDataRepositoryInteractor,
     private val gymRepository: GymRepositoryInteractor
 ): ViewModel() {
 
@@ -28,8 +30,6 @@ class GymDetailsScreenViewModel @Inject constructor(
     val isEditing = mutableStateOf(false)
 
     val nameTextState = mutableStateOf(gym.value?.name ?: "")
-
-    //val rating = mutableStateOf(5.0)
 
     fun onNameTextChanged(name: String) {
         nameTextState.value = name
@@ -111,8 +111,31 @@ class GymDetailsScreenViewModel @Inject constructor(
         events.emit(Events.NavigateToAddReviewScreen(gymId))
     }
 
+    fun onRecordWorkoutButtonClicked() = viewModelScope.launch {
+
+        try {
+
+            val currentUserId = authRepository.getUserId()
+
+            userDataRepository.updateUserPoints(currentUserId, 5) { isSuccessful ->
+                if (isSuccessful)
+                    makeSuccessfulWorkoutToast()
+                else
+                    makeGenericErrorToast()
+            }
+
+        } catch (e: Exception) {
+            makeGenericErrorToast()
+            e.printStackTrace()
+        }
+    }
+
     private fun navigateToHomeScreen() = viewModelScope.launch {
         events.emit(Events.NavigateToHomeScreen)
+    }
+
+    private fun makeSuccessfulWorkoutToast() = viewModelScope.launch {
+        events.emit(Events.MakeSuccessfulWorkoutToast)
     }
 
     private fun makeGenericErrorToast() = viewModelScope.launch {
@@ -126,6 +149,7 @@ class GymDetailsScreenViewModel @Inject constructor(
     sealed class Events {
         object NavigateToHomeScreen: Events()
         object MakeGenericErrorToast: Events()
+        object MakeSuccessfulWorkoutToast: Events()
         data class NavigateToAddReviewScreen(val selectedGymId: String): Events()
         data class NavigateToSeeReviewsScreen(val selectedGymId: String): Events()
     }

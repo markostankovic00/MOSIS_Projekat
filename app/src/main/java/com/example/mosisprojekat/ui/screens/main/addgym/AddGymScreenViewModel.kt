@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mosisprojekat.repository.interactors.AuthRepositoryInteractor
 import com.example.mosisprojekat.repository.interactors.GymRepositoryInteractor
+import com.example.mosisprojekat.repository.interactors.UsersDataRepositoryInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddGymScreenViewModel @Inject constructor(
     private val authRepository: AuthRepositoryInteractor,
+    private val userDataRepository: UsersDataRepositoryInteractor,
     private val gymRepository: GymRepositoryInteractor
 ):ViewModel() {
 
@@ -37,11 +39,29 @@ class AddGymScreenViewModel @Inject constructor(
                 lng = lng
             ) { isSuccessful ->
                 if (isSuccessful)
-                    navigateToHomeScreen()
+                    addUserPoints()
                 else
                     makeGenericErrorToast()
             }
         }  catch (e: Exception) {
+            makeGenericErrorToast()
+            e.printStackTrace()
+        }
+    }
+
+    private fun addUserPoints() = viewModelScope.launch {
+        try {
+
+            val currentUserId = authRepository.getUserId()
+
+            userDataRepository.updateUserPoints(currentUserId, 200) { isSuccessful ->
+                if (isSuccessful)
+                    navigateToHomeScreen()
+                else
+                    makeGenericErrorToast()
+            }
+
+        } catch (e: Exception) {
             makeGenericErrorToast()
             e.printStackTrace()
         }

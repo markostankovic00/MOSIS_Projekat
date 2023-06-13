@@ -6,7 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface UsersDataRepositoryInteractor {
 
-    fun getUserData(userId: String): Flow<Resource<List<UserData>>>
+    fun getUserData(
+        userId: String,
+        onError: (Throwable?) -> Unit,
+        onSuccess: (UserData?) -> Unit
+    )
 
     fun getAllUsersData(): Flow<Resource<List<UserData>>>
 
@@ -20,7 +24,7 @@ interface UsersDataRepositoryInteractor {
     )
 
     fun updateUserPoints(
-        userDataId: String,
+        userId: String,
         points: Int,
         onComplete: (Boolean) -> Unit
     )

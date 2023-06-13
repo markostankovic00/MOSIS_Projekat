@@ -20,16 +20,8 @@ class ProfileScreenViewModel @Inject constructor(
 
     val events = MutableSharedFlow<Events?>(replay = 0)
 
-    private val _userData = MutableStateFlow<List<UserData>>(emptyList())
-
-    private val _name = MutableStateFlow("")
-    var name = _name.asStateFlow()
-
-    private val _surname = MutableStateFlow("")
-    var surname = _surname.asStateFlow()
-
-    private val _email = MutableStateFlow("")
-    var email = _email.asStateFlow()
+    private val _userData = MutableStateFlow<UserData?>(null)
+    val userData = _userData.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -45,14 +37,16 @@ class ProfileScreenViewModel @Inject constructor(
     }
 
     private fun loadUserData(userId: String) = viewModelScope.launch {
-        userDataRepository.getUserData(userId).collect{
-            _userData.value = it.data ?: emptyList()
-            if(_userData.value.isNotEmpty()) {
-                _name.value = _userData.value[0].name
-                _surname.value = _userData.value[0].surname
-                _email.value = _userData.value[0].email
+        userDataRepository.getUserData(
+            userId = userId,
+            onError = {
+                makeGenericErrorToast()
+                it?.printStackTrace()
+            },
+            onSuccess = { userData ->
+                _userData.value = userData
             }
-        }
+        )
     }
 
     fun onLogOut() = viewModelScope.launch {

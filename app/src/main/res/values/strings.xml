@@ -39,6 +39,7 @@
     <string name="profile_screen_name_label">Name:</string>
     <string name="profile_screen_surname_label">Surname:</string>
     <string name="profile_screen_email_label">Email:</string>
+    <string name="profile_screen_points_label">Points:</string>
 
     //ADD GYM SCREEN
     <string name="add_gym_screen_title">Add Gym</string>
@@ -66,6 +67,7 @@
     <string name="gym_details_screen_ok_button_text">OK</string>
     <string name="gym_details_screen_see_reviews_button_text">See Reviews</string>
     <string name="gym_details_screen_add_review_button_text">Add Review</string>
+    <string name="gym_details_screen_record_workout_button_text">Workout</string>
 
     //BOTTOM NAV BAR
     <string name="bottom_nav_bar_rankings">Rankings</string>
@@ -86,5 +88,6 @@
     //ADDITIONAL STRINGS
     <string name="search_bar_by_name">Search by gym name</string>
     <string name="successful_deletion_toast">Deleted successfully!</string>
+    <string name="successful_workout_toast">Worked out successfully, what a beast!</string>
 
 </resources>

@@ -235,7 +235,7 @@ private fun GymDetailsScreenView(
 
                 PrimaryButton(
                     modifier = Modifier
-                        .padding(top = MaterialTheme.spacing.large)
+                        .padding(top = MaterialTheme.spacing.medium)
                         .height(57.dp)
                         .width(150.dp),
                     text = stringResource(id = R.string.gym_details_screen_see_reviews_button_text),
@@ -244,11 +244,20 @@ private fun GymDetailsScreenView(
 
                 PrimaryButton(
                     modifier = Modifier
-                        .padding(top = MaterialTheme.spacing.large)
+                        .padding(top = MaterialTheme.spacing.medium)
                         .height(57.dp)
                         .width(150.dp),
                     text = stringResource(id = R.string.gym_details_screen_add_review_button_text),
                     onClick = { viewModel.onAddReviewButtonClicked(selectedGymId) }
+                )
+
+                PrimaryButton(
+                    modifier = Modifier
+                        .padding(top = MaterialTheme.spacing.medium)
+                        .height(57.dp)
+                        .width(150.dp),
+                    text = stringResource(id = R.string.gym_details_screen_record_workout_button_text),
+                    onClick = { viewModel.onRecordWorkoutButtonClicked() }
                 )
             }
 
@@ -271,7 +280,15 @@ private fun EventsHandler(
         when (event.value) {
             Events.NavigateToHomeScreen -> {
                 navController.popBackStack()
-                navController.navigate(Routes.HOME_SCREEN)
+            }
+
+            Events.MakeSuccessfulWorkoutToast -> {
+                Toast.makeText(
+                    context,
+                    context.getText(R.string.successful_workout_toast),
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.clearEventChannel()
             }
 
             Events.MakeGenericErrorToast -> {

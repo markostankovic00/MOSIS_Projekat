@@ -4,6 +4,7 @@ import com.example.mosisprojekat.models.UserData
 import com.example.mosisprojekat.repository.interactors.UsersDataRepositoryInteractor
 import com.example.mosisprojekat.util.Resource
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,31 +19,17 @@ class UsersDataRepository: UsersDataRepositoryInteractor {
     private val usersDataRef: CollectionReference =
         Firebase.firestore.collection(USERS_DATA_COLLECTION_REF)
 
-    override fun getUserData(userId: String): Flow<Resource<List<UserData>>> = callbackFlow {
 
-        var snapshotStateListener: ListenerRegistration? = null
-
-        try {
-            snapshotStateListener = usersDataRef
-                .whereEqualTo("userId", userId)
-                //.limit(1)
-                .addSnapshotListener { snapshot, e ->
-                    val response = if (snapshot != null) {
-                        val userData = snapshot.toObjects(UserData::class.java)
-                        Resource.Success(data = userData)
-                    } else {
-                        Resource.Error(message = e?.message ?: "Something went wrong")
-                    }
-                    trySend(response)
-                }
-        } catch (e:Exception) {
-            trySend(Resource.Error(e.message ?: "Something went wrong"))
-            e.printStackTrace()
-        }
-
-        awaitClose {
-            snapshotStateListener?.remove()
-        }
+    override fun getUserData(
+        userId: String,
+        onError: (Throwable?) -> Unit,
+        onSuccess: (UserData?) -> Unit
+    ) {
+        usersDataRef
+            .document(userId)
+            .get()
+            .addOnSuccessListener { onSuccess.invoke(it.toObject(UserData::class.java)) }
+            .addOnFailureListener { onError.invoke(it.cause) }
     }
 
     override fun getAllUsersData(): Flow<Resource<List<UserData>>> = callbackFlow {
@@ -79,18 +66,17 @@ class UsersDataRepository: UsersDataRepositoryInteractor {
         points: Int,
         onComplete: (Boolean) -> Unit
     ) {
-        val documentId = usersDataRef.document().id
+
         val userData = UserData(
             userId = userId,
             name = name,
             surname = surname,
             email = email,
-            points = points,
-            documentId = documentId
+            points = points
         )
 
         usersDataRef
-            .document(documentId)
+            .document(userId)
             .set(userData)
             .addOnCompleteListener { result ->
                 onComplete.invoke(result.isSuccessful)
@@ -98,12 +84,13 @@ class UsersDataRepository: UsersDataRepositoryInteractor {
     }
 
     override fun updateUserPoints(
-        userDataId: String,
+        userId: String,
         points: Int,
         onComplete: (Boolean) -> Unit
     ) {
-        usersDataRef.document(userDataId)
-            .update("points", points)
+
+        usersDataRef.document(userId)
+            .update("points", FieldValue.increment(points.toLong()))
             .addOnCompleteListener { result ->
                 onComplete.invoke(result.isSuccessful)
             }

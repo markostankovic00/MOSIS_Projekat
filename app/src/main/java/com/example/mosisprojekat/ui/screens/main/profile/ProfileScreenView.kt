@@ -47,11 +47,13 @@ private fun ProfileScreenView(
 
     val scrollState = rememberScrollState()
 
-    val name by viewModel.name.collectAsState()
+    val userData by viewModel.userData.collectAsState()
+
+    /*val name by viewModel.name.collectAsState()
 
     val surname by viewModel.surname.collectAsState()
 
-    val email by viewModel.email.collectAsState()
+    val email by viewModel.email.collectAsState()*/
 
     BoxWithBackgroundPattern {
 
@@ -75,17 +77,22 @@ private fun ProfileScreenView(
 
             ProfileDataRow(
                 label = stringResource(id = R.string.profile_screen_name_label),
-                data = name
+                data = userData?.name ?: ""
             )
 
             ProfileDataRow(
                 label = stringResource(id = R.string.profile_screen_surname_label),
-                data = surname
+                data = userData?.surname ?: ""
             )
 
             ProfileDataRow(
                 label = stringResource(id = R.string.profile_screen_email_label),
-                data = email
+                data = userData?.email ?: ""
+            )
+
+            ProfileDataRow(
+                label = stringResource(id = R.string.profile_screen_points_label),
+                data = userData?.points.toString()
             )
 
             PrimaryButton(
