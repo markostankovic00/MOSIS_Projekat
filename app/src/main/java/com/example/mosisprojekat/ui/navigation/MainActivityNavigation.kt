@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
@@ -28,6 +29,7 @@ import com.example.mosisprojekat.R
 import com.example.mosisprojekat.ui.screens.main.addgym.AddGymScreen
 import com.example.mosisprojekat.ui.screens.main.addreview.AddReviewScreen
 import com.example.mosisprojekat.ui.screens.main.gymdetails.GymDetailsScreen
+import com.example.mosisprojekat.ui.screens.main.gymlist.GymListScreen
 import com.example.mosisprojekat.ui.screens.main.profile.ProfileScreen
 import com.example.mosisprojekat.ui.screens.main.rankings.RankingsScreen
 import com.example.mosisprojekat.ui.screens.main.seereviews.SeeReviewsScreen
@@ -69,14 +71,19 @@ private fun NavHostAndBottomNavigation(
 
     val bottomNavBarItems = listOf(
         BottomNavItem(
-            name = stringResource(R.string.bottom_nav_bar_rankings),
-            route = Routes.RANKINGS_SCREEN,
-            icon = Icons.Default.EmojiEvents
-        ),
-        BottomNavItem(
             name = stringResource(R.string.bottom_nav_bar_home),
             route = Routes.HOME_SCREEN,
             icon = Icons.Default.Home
+        ),
+        BottomNavItem(
+            name = stringResource(R.string.bottom_nav_bar_gym_list),
+            route = Routes.GYM_LIST_SCREEN,
+            icon = Icons.Default.FitnessCenter
+        ),
+        BottomNavItem(
+            name = stringResource(R.string.bottom_nav_bar_rankings),
+            route = Routes.RANKINGS_SCREEN,
+            icon = Icons.Default.EmojiEvents
         ),
         BottomNavItem(
             name = stringResource(R.string.bottom_nav_bar_profile),
@@ -144,6 +151,12 @@ private fun AnimatedNavigation(
             route = Routes.RANKINGS_SCREEN
         ) {
             RankingsScreen(navController)
+        }
+
+        composable(
+            route = Routes.GYM_LIST_SCREEN
+        ) {
+            GymListScreen(navController)
         }
 
         composable(
@@ -236,6 +249,10 @@ private fun EventsHandler(
             Events.NavigateToRankings -> {
                 navController.popBackStack()
                 navController.navigate(Routes.RANKINGS_SCREEN)
+            }
+            Events.NavigateToGymList -> {
+                navController.popBackStack()
+                navController.navigate(Routes.GYM_LIST_SCREEN)
             }
             Events.MakeLocationErrorToast -> {
                 Toast.makeText(context, context.getText(R.string.error_location), Toast.LENGTH_SHORT).show()

@@ -40,7 +40,8 @@ class MainViewModel @Inject constructor(): ViewModel() {
         bottomNavBarVisibilityState.value = currentRoute in listOf(
             Routes.HOME_SCREEN,
             Routes.PROFILE_SCREEN,
-            Routes.RANKINGS_SCREEN
+            Routes.RANKINGS_SCREEN,
+            Routes.GYM_LIST_SCREEN
         )
     }
 
@@ -49,6 +50,7 @@ class MainViewModel @Inject constructor(): ViewModel() {
             Routes.HOME_SCREEN -> events.emit(Events.NavigateToHome)
             Routes.PROFILE_SCREEN -> events.emit(Events.NavigateToProfile)
             Routes.RANKINGS_SCREEN -> events.emit(Events.NavigateToRankings)
+            Routes.GYM_LIST_SCREEN -> events.emit(Events.NavigateToGymList)
         }
     }
 
@@ -65,6 +67,7 @@ class MainViewModel @Inject constructor(): ViewModel() {
         object NavigateToHome: Events()
         object NavigateToProfile: Events()
         object NavigateToRankings: Events()
+        object NavigateToGymList: Events()
         object MakeLocationErrorToast: Events()
     }
 }

@@ -33,6 +33,9 @@
     //RANKINGS SCREEN
     <string name="rankings_screen_title">Rankings</string>
 
+    //GYM LIST SCREEN
+    <string name="gym_list_screen_title">Gyms</string>
+
     //PROFILE SCREEN
     <string name="profile_screen_title">Profile</string>
     <string name="profile_screen_log_out_button">Log Out</string>
@@ -70,8 +73,9 @@
     <string name="gym_details_screen_record_workout_button_text">Workout</string>
 
     //BOTTOM NAV BAR
-    <string name="bottom_nav_bar_rankings">Rankings</string>
     <string name="bottom_nav_bar_home">Home</string>
+    <string name="bottom_nav_bar_gym_list">Gyms</string>
+    <string name="bottom_nav_bar_rankings">Rankings</string>
     <string name="bottom_nav_bar_profile">Profile</string>
 
     //ERRORS
