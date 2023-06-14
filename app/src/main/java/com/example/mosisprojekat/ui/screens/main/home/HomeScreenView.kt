@@ -186,7 +186,6 @@ private fun HomeScreenView(
         }
 
 
-
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             properties = mapProperties,

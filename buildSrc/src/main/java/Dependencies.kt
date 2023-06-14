@@ -73,6 +73,7 @@ object Dependencies {
     const val firebase_platform = "com.google.firebase:firebase-bom:$firebase_version"
     const val firebase_authentication = "com.google.firebase:firebase-auth-ktx"
     const val firebase_firestore = "com.google.firebase:firebase-firestore-ktx"
+    const val firebase_storage = "com.google.firebase:firebase-storage-ktx"
 
     //DAGGER HILT
     const val dagger_hilt = "com.google.dagger:hilt-android:$dagger_hilt_version"

@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,19 +21,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import com.example.mosisprojekat.ui.navigation.MainActivityLayoutAndNavigation
 import com.example.mosisprojekat.ui.theme.MosisProjekatTheme
 import com.example.mosisprojekat.util.location.DefaultLocationClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
 @FlowPreview
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -43,7 +45,8 @@ class MainActivity : ComponentActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Timber.i("Logging: Permission granted after request")
+                initializeLocationClient(viewModel)
+                isLocationPermissionGranted = true
             }
         }
 
@@ -52,12 +55,17 @@ class MainActivity : ComponentActivity() {
             this,
             ACCESS_FINE_LOCATION
         ) -> {
-            Timber.i("Logging: Permission already granted")
+            Timber.i("Logging: Permission is already granted")
+            isLocationPermissionGranted = true
         }
         else -> {
             requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
         }
     }
+
+    private val viewModel by viewModels<MainViewModel>()
+
+    private var isLocationPermissionGranted = false
 
     @SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,8 +74,6 @@ class MainActivity : ComponentActivity() {
         handleNavigationBugOnXiaomiDevices()
 
         setContent {
-
-            val viewModel = hiltViewModel<MainViewModel>()
 
             askPermissions()
 
@@ -81,10 +87,11 @@ class MainActivity : ComponentActivity() {
 
                 viewModel.checkIfGPSEnabled(locationManager)
 
-                LaunchedEffect(key1 = gpsEnabled) {
-                    if(gpsEnabled)
-                        initializeLocationClient(viewModel)
-                }
+                if(isLocationPermissionGranted)
+                    LaunchedEffect(key1 = gpsEnabled) {
+                        if (gpsEnabled)
+                            initializeLocationClient(viewModel)
+                    }
 
                 Surface(
                     modifier = Modifier

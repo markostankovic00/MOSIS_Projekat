@@ -1,5 +1,6 @@
 package com.example.mosisprojekat.ui.screens.main.profile
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mosisprojekat.models.UserData
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +24,9 @@ class ProfileScreenViewModel @Inject constructor(
 
     private val _userData = MutableStateFlow<UserData?>(null)
     val userData = _userData.asStateFlow()
+
+    private val _isUploading = MutableStateFlow(false)
+    val isUploading = _isUploading.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -49,6 +54,33 @@ class ProfileScreenViewModel @Inject constructor(
         )
     }
 
+    fun onProfilePhotoClicked(photoUri: Uri?) = viewModelScope.launch {
+        if (photoUri != null)
+            uploadUserPhoto(authRepository.getUserId(), photoUri)
+        else {
+            makeGenericErrorToast()
+            Timber.i("Logging: Error with photo picker")
+        }
+    }
+
+    private fun uploadUserPhoto(userId: String, photoUri: Uri) = viewModelScope.launch {
+        _isUploading.value = true
+        userDataRepository.uploadUserPhoto(
+            userId = userId,
+            photoUri = photoUri,
+            onError = {
+                _isUploading.value = false
+                makeGenericErrorToast()
+                it?.printStackTrace()
+            },
+            onSuccess = {
+                makeSuccessfullyChangedProfilePictureToast()
+                loadUserData(userId)
+                _isUploading.value = false
+            }
+        )
+    }
+
     fun onLogOut() = viewModelScope.launch {
         try {
             authRepository.logOutUser()
@@ -57,6 +89,10 @@ class ProfileScreenViewModel @Inject constructor(
             makeLogOutErrorToast()
             e.printStackTrace()
         }
+    }
+
+    private fun makeSuccessfullyChangedProfilePictureToast() = viewModelScope.launch {
+        events.emit(Events.MakeSuccessfullyChangedProfilePictureToast)
     }
 
     private fun makeGenericErrorToast() = viewModelScope.launch {
@@ -75,5 +111,6 @@ class ProfileScreenViewModel @Inject constructor(
         object NavigateToSplashScreen: Events()
         object MakeLogOutErrorToast: Events()
         object MakeGenericErrorToast: Events()
+        object MakeSuccessfullyChangedProfilePictureToast: Events()
     }
 }

@@ -93,5 +93,6 @@
     <string name="search_bar_by_name">Search by gym name</string>
     <string name="successful_deletion_toast">Deleted successfully!</string>
     <string name="successful_workout_toast">Worked out successfully, what a beast!</string>
+    <string name="successful_changed_profile_picture_toast">Successfully changed profile picture!</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.mosisprojekat.repository.interactors
 
+import android.net.Uri
 import com.example.mosisprojekat.models.UserData
 import com.example.mosisprojekat.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -27,5 +28,12 @@ interface UsersDataRepositoryInteractor {
         userId: String,
         points: Int,
         onComplete: (Boolean) -> Unit
+    )
+
+    fun uploadUserPhoto(
+        userId: String,
+        photoUri: Uri,
+        onSuccess: () -> Unit,
+        onError: (Throwable?) -> Unit
     )
 }
