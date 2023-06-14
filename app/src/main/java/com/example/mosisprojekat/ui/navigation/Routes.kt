@@ -17,4 +17,5 @@ object Routes {
     const val ADD_GYM_SCREEN = "add_gym_screen"
     const val ADD_REVIEW_SCREEN = "add_review_screen"
     const val SEE_REVIEWS_SCREEN = "see_reviews_screen"
+    const val USER_DETAILS_SCREEN = "user_details_screen"
 }

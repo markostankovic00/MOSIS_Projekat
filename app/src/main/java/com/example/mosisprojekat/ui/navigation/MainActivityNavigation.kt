@@ -33,6 +33,7 @@ import com.example.mosisprojekat.ui.screens.main.gymlist.GymListScreen
 import com.example.mosisprojekat.ui.screens.main.profile.ProfileScreen
 import com.example.mosisprojekat.ui.screens.main.rankings.RankingsScreen
 import com.example.mosisprojekat.ui.screens.main.seereviews.SeeReviewsScreen
+import com.example.mosisprojekat.ui.screens.main.userdetails.UserDetailsScreen
 import com.example.mosisprojekat.ui.uiutil.composables.bottomnav.BottomNavBar
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -175,6 +176,21 @@ private fun AnimatedNavigation(
             GymDetailsScreen(
                 navController,
                 it.arguments?.getString("selectedGymId") ?: ""
+            )
+        }
+
+        composable(
+            route = Routes.USER_DETAILS_SCREEN  + "/{selectedUserId}",
+            arguments = listOf(
+                navArgument("selectedUserId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) {
+            UserDetailsScreen(
+                navController,
+                it.arguments?.getString("selectedUserId") ?: ""
             )
         }
 

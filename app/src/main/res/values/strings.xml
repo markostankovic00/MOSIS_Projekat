@@ -72,6 +72,13 @@
     <string name="gym_details_screen_add_review_button_text">Add Review</string>
     <string name="gym_details_screen_record_workout_button_text">Workout</string>
 
+    //USER DETAILS SCREEN
+    <string name="user_details_screen_ok_button">OK</string>
+    <string name="user_details_screen_name_label">Name:</string>
+    <string name="user_details_screen_surname_label">Surname:</string>
+    <string name="user_details_screen_email_label">Email:</string>
+    <string name="user_details_screen_points_label">Points:</string>
+
     //BOTTOM NAV BAR
     <string name="bottom_nav_bar_home">Home</string>
     <string name="bottom_nav_bar_gym_list">Gyms</string>

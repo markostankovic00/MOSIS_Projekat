@@ -3,6 +3,7 @@ package com.example.mosisprojekat.ui.screens.main.rankings
 import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -11,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.mosisprojekat.R
+import com.example.mosisprojekat.ui.navigation.Routes
 import com.example.mosisprojekat.ui.screens.main.rankings.RankingsScreenViewModel.Events
 import com.example.mosisprojekat.ui.theme.RankingRowHighlightColor
 import com.example.mosisprojekat.ui.theme.spacing
@@ -82,7 +85,8 @@ private fun RankingsScreenView(
                         name = user.name,
                         surname = user.surname,
                         points = user.points,
-                        isCurrentUser = user.userId == currentUserID
+                        isCurrentUser = user.userId == currentUserID,
+                        onClick = { viewModel.onUserDataRowClick(user.userId) }
                     )
                 }
             }
@@ -97,7 +101,8 @@ private fun UserRankingDataRow(
     name: String,
     surname: String,
     points: Int,
-    isCurrentUser: Boolean
+    isCurrentUser: Boolean,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -110,7 +115,12 @@ private fun UserRankingDataRow(
                 else
                     MaterialTheme.colors.surface,
                 shape = MaterialTheme.shapes.medium
-            ),
+            )
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { if (!isCurrentUser) onClick() }
+                )
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -147,6 +157,11 @@ private fun EventsHandler(
 
     LaunchedEffect(key1 = event.value) {
         when (event.value) {
+            is Events.NavigateToUserDetailsScreen -> {
+                val selectedUserId = (event.value as Events.NavigateToUserDetailsScreen).selectedUserId
+                navController.navigate(Routes.USER_DETAILS_SCREEN + "/" + selectedUserId)
+            }
+
             Events.MakeGenericErrorToast -> {
                 Toast.makeText(context, context.getText(R.string.error_generic), Toast.LENGTH_SHORT).show()
                 viewModel.clearEventChannel()

@@ -38,10 +38,18 @@ class RankingsScreenViewModel @Inject constructor(
         }
     }
 
+    fun onUserDataRowClick(selectedUserId: String) = viewModelScope.launch {
+        navigateToUserDetailsScreen(selectedUserId)
+    }
+
     private fun loadUsersData() = viewModelScope.launch {
         userDataRepository.getAllUsersData().collect {
             _listOfUsers.value = it.data ?: emptyList()
         }
+    }
+
+    private fun navigateToUserDetailsScreen(selectedUserId: String) = viewModelScope.launch {
+        events.emit(Events.NavigateToUserDetailsScreen(selectedUserId))
     }
 
     private fun makeGenericErrorToast() = viewModelScope.launch {
@@ -53,6 +61,7 @@ class RankingsScreenViewModel @Inject constructor(
     }
 
     sealed class Events {
+        data class NavigateToUserDetailsScreen(val selectedUserId: String): Events()
         object MakeGenericErrorToast: Events()
     }
 }
